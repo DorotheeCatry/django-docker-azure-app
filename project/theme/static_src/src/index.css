@@ -1,0 +1,16 @@
+/* index.css */
+
+/* Importez les styles de base de Tailwind */
+@tailwind base;
+
+/* Importez les composants de Tailwind */
+@tailwind components;
+
+/* Importez les utilitaires de Tailwind */
+@tailwind utilities;
+
+/* Ajoutez vos styles personnalisés ici */
+.btn-elegant {
+    @apply px-4 py-2 rounded-md font-medium text-center shadow-md transition duration-300 ease-in-out;
+    @apply bg-accent-700 text-white hover:bg-accent-600;
+}
