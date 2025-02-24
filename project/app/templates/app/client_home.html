@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link relstylesheet" href="{% static 'src/styles.css' %}">
+<div classcontainer">
+  <h1 classtext-header">Client Dashboard</h1>
+ <a href% url 'request_loan' %}" class="btn-elegant">Request a Loan</a>
+   class="mt-10">
+    <h2 classtitle">Your Loan Requests</h2>
+    for loan in loan_requests %}
+      <div classcard">
+        <p>Amount {{ loan.amount }}</p>
+       <p>Status {{ loan.status }}</p>
+       <p>Reason {{ loan.reason }}</p>
+     </div>
+ {% endfor %}
+  </div>
+>
+{% endblock %}
