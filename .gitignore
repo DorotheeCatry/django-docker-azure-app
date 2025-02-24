@@ -84,3 +84,9 @@ Icon?
 ehthumbs.db
 Thumbs.db
 Desktop.ini
+
+# Bdd
+*.sqlite
+*.sqlite3
+*.db
+*.sql
