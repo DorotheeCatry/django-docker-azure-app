@@ -27,8 +27,12 @@ __pycache__/
 target/
 .classpath
 
-# Environnements
-.env
+# Environnements virtuels
+venv/
+.venv/
+.env/
+env/
+*.env
 .env.local
 .env.*.local
 
