@@ -1,0 +1,82 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dépendances Node.js
+node_modules/
+
+# Build/Distribution
+dist/
+build/
+out/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Java
+*.class
+target/
+.classpath
+
+# Environnements
+.env
+.env.local
+.env.*.local
+
+# Fichiers sensibles
+*.key
+*.pem
+*.crt
+
+# IDE/Éditeurs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Systèmes de versionnement
+*.orig
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.bak
+*.old
+*.swp
+*.swo
+*.pid
+*.seed
+*.pid.lock
+
+# Systèmes d'exploitation
+*.~lock.*
+*.lock
+*.lockfile
+*.bak
+*.backup
+*.tmp
+*.temp
+*.swp
+*.swo
+*.DS_Store
+*.AppleDouble
+*.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
