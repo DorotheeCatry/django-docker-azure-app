@@ -4,6 +4,7 @@ asgiref==3.8.1
 asttokens==3.0.0
 binaryornot==0.4.4
 certifi==2025.1.31
+channels==4.2.0
 chardet==5.2.0
 charset-normalizer==3.4.1
 click==8.1.8

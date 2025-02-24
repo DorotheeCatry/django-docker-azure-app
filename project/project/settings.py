@@ -21,6 +21,7 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+AUTH_USER_MODEL = 'app.User'
 
 
 # Quick-start development settings - unsuitable for production
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'app',
     'tailwind',
     'theme',
+    'channels',
 ]
 
 STATICFILES_DIRS = [
@@ -89,7 +91,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
-
+ASGI_APPLICATION = 'project.asgi.application'
 
 
 # Database

@@ -19,10 +19,9 @@ class ChangePasswordForm(PasswordChangeForm):
         self.fields["new_password1"].help_text = format_html(
             '<ul classtext-sm text-gray-600 mt-2">'
             "<li>Your must be at least 8 characters long.</li>"
- "<li>Your cannot be entirely numeric.</li>"
- "<li>Your cannot be too similar to your other personal information.</li>"
- "</ul>"
- )
+            "<li>Your cannot be entirely numeric.</li>"
+            "<li>Your cannot be too similar to your other personal information.</li>"
+            "</ul>")
 
         for field in self.fields:
             self.fields[field].widget.attrs.update(

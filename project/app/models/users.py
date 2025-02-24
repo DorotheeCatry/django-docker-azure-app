@@ -1,0 +1,19 @@
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    """
+    Modèle utilisateur personnalisé pour gérer les clients et les conseillers bancaires.
+    """
+    ROLE_CHOICES = [
+        ('client', 'Client'),
+        ('conseiller', 'Conseiller Bancaire'),
+    ]
+
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='client')
+
+    def __str__(self):
+        return f"{self.username} ({self.role})"
+
+
+
