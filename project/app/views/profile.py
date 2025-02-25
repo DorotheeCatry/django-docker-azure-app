@@ -11,7 +11,7 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
     """
     model = get_user_model()
     form_class = UserProfileForm
-    template_name = 'insurance_app/profile.html'
+    template_name = 'app/client_profile.html'
     success_url = reverse_lazy('profile')
 
     def get_object(self, queryset=None):

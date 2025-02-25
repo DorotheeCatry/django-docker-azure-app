@@ -3,71 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Loans - Home</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Lien vers une feuille de style CSS externe -->
+    <title>PRIMEBANK - Refined Financial Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-50">
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Financial solutions</h1>
-            <h2>tailored for you</h2>
-            <p>Experience seamless lending with Elite Loans. We offer competitive rates, quick approvals, and personalized service for all your financial needs.</p>
-            <a href="login.html" class="btn">Get Started</a>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2>Why Choose Elite Loans</h2>
-            <p>We combine financial expertise with cutting-edge technology to provide you with the best lending experience.</p>
-            <div class="feature-list">
-                <div class="feature">
-                    <h3>Secure & Trusted</h3>
-                    <p>Bank-level security and trusted by thousands of satisfied customers.</p>
+    <section class="bg-white py-32">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-16">
+            <div class="md:w-1/2">
+                <h1 class="text-6xl font-light text-gray-900 mb-8 leading-tight tracking-tight">
+                    Refined Financial <br>
+                    <span class="font-semibold">Solutions</span>
+                </h1>
+                <p class="text-gray-600 text-lg mb-12 leading-relaxed max-w-xl">
+                    Experience premium banking with our curated selection of financial products, designed for those who appreciate sophistication in their financial journey.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                    <button class="bg-gray-900 text-white px-10 py-4 rounded-full hover:bg-gray-800 transition-colors">Calculate Rate</button>
+                    <button class="border-2 border-gray-900 text-gray-900 px-10 py-4 rounded-full hover:bg-gray-50 transition-colors">Learn More</button>
                 </div>
-                <div class="feature">
-                    <h3>Quick Approval</h3>
-                    <p>Get approved in minutes with our streamlined application process.</p>
-                </div>
-                <div class="feature">
-                    <h3>Competitive Rates</h3>
-                    <p>We offer some of the most competitive interest rates in the market.</p>
-                </div>
+            </div>
+            <div class="md:w-1/2">
+                <img 
+                    src="https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?auto=format&fit=crop&w=1400&q=80" 
+                    alt="Sophisticated Banking" 
+                    class="rounded-3xl shadow-2xl grayscale hover:grayscale-0 transition-all duration-500">
             </div>
         </div>
     </section>
-
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
-            <div class="stat">
-                <p>10K+</p>
-                <span>Happy Customers</span>
-            </div>
-            <div class="stat">
-                <p>$500M+</p>
-                <span>Loans Funded</span>
-            </div>
-            <div class="stat">
-                <p>98%</p>
-                <span>Satisfaction Rate</span>
-            </div>
-            <div class="stat">
-                <p>15+</p>
-                <span>Years Experience</span>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to get started?</h2>
-            <p>Join thousands of satisfied customers who trust Elite Loans for their financial needs.</p>
-            <a href="login.html" class="btn">Apply Now</a>
+    <section class="py-32 bg-gray-50">
+        <div class="container mx-auto px-6 text-center">
+            <div class="bg-gray-900 rounded-3xl p-20">
+                <h2 class="text-4xl font-light text-white mb-8">Begin Your <span class="font-semibold">Premium Journey</span></h2>
+                <p class="text-gray-400 mb-12 max-w-2xl mx-auto text-lg">
+                    Take the first step towards elevated financial services. Our expert advisors are ready to craft your bespoke solution.
+                </p>
+                <button class="bg-white text-gray-900 px-12 py-4 rounded-full hover:bg-gray-100 transition-colors">Start Now</button>
+            </div>
         </div>
     </section>
+    
+    <!-- Footer -->
+    <footer class="bg-white py-20 border-t border-gray-100 text-center">
+        <div class="container mx-auto px-6">
+            <div class="text-gray-600 text-sm tracking-wide">
+                &copy; 2025 PRIMEBANK. ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

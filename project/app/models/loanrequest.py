@@ -1,15 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.conf import settings
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class LoanRequest(models.Model):
     """
     Modèle pour les demandes de prêt.
     """
     STATUS_CHOICES = [
-        ('pending'),
-        ('approved'),
-        ('rejected'),
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='loan_requests')
@@ -30,13 +31,9 @@ class LoanRequest(models.Model):
 
     # Attributs de localisation
     state = models.CharField(max_length=2)  # Abréviation de l'état
-    rural = models.CharField(max_length=1, choices=[('0', 'Urban'), ('1', 'Rural'), ('None', 'Undefined')])  # Urban, Rural ou Undefined
+    rural = models.CharField(max_length=4, choices=[('0', 'Urban'), ('1', 'Rural'), ('None', 'Undefined')])  # Urban, Rural ou Undefined
     
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
-
-
     def __str__(self):
         return f"Loan {self.id} - {self.status} ({self.user.username})"
-    
-    
