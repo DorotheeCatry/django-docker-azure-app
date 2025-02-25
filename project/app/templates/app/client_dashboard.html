@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>Espace Client - BanqueNet</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="../dist/styles.css" />
+    <script type="module" src="client.js"></script>
+  </head>
+  <body class="bg-gray-50">
+    <nav class="bg-white border-b border-gray-100">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <h1 class="text-xl font-light tracking-wider text-gray-900">BANQUE<span class="font-medium">NET</span></h1>
+            </div>
+            <div class="hidden sm:ml-10 sm:flex sm:space-x-8">
+              <a href="#" class="border-b-2 border-gray-900 text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                Tableau de bord
+              </a>
+              <a href="#news" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                Actualités
+              </a>
+              <a href="#loan" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                Demande de prêt
+              </a>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <span class="text-sm text-gray-500 font-light">Client: <span class="font-medium text-gray-900">Entreprise ABC</span></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto py-8 px-4">
+      <!-- Section Tableau de bord -->
+      <section id="dashboard" class="mb-12">
+        <h2 class="text-2xl font-light text-gray-900 tracking-tight mb-8">Tableau de bord</h2>
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="card">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Vos demandes de prêts</h3>
+            <div id="loanStatus" class="space-y-4">
+              <!-- Les demandes seront injectées ici via JavaScript -->
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Votre conseiller</h3>
+            <div class="flex items-center space-x-4 mb-6">
+              <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                <span class="text-gray-600 font-medium">D</span>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900">David Martin</p>
+                <p class="text-sm text-gray-500">Conseiller entreprises</p>
+              </div>
+            </div>
+            <button class="btn btn-primary w-full">Contacter mon conseiller</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Actualités -->
+      <section id="news" class="mb-12">
+        <h2 class="text-2xl font-light text-gray-900 tracking-tight mb-8">Actualités</h2>
+        <div id="newsList" class="grid gap-6">
+          <!-- Les actualités seront injectées ici via JavaScript -->
+        </div>
+      </section>
+
+      <!-- Section Demande de prêt -->
+      <section id="loan">
+        <h2 class="text-2xl font-light text-gray-900 tracking-tight mb-8">Nouvelle demande de prêt</h2>
+        <div class="card max-w-2xl">
+          <form id="loanRequestForm" class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Montant souhaité</label>
+              <div class="relative">
+                <input type="number" name="amount" class="w-full pl-8" required>
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Objet du prêt</label>
+              <select name="purpose" class="w-full" required>
+                <option value="">Sélectionnez un motif</option>
+                <option value="investment">Investissement</option>
+                <option value="equipment">Équipement</option>
+                <option value="cashflow">Trésorerie</option>
+                <option value="development">Développement</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Description du projet</label>
+              <textarea name="description" rows="4" class="w-full" required></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Documents justificatifs</label>
+              <div class="border-2 border-dashed border-gray-200 rounded-md p-6 text-center">
+                <p class="text-sm text-gray-500">Glissez vos documents ici ou</p>
+                <button type="button" class="text-sm text-gray-900 font-medium hover:text-gray-700">parcourez vos fichiers</button>
+                <input type="file" class="hidden" multiple>
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <button type="submit" class="btn btn-primary">Soumettre la demande</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

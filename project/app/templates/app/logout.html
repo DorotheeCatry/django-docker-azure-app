@@ -1,1 +1,21 @@
-<link relstylesheet" href="{% static 'src/styles.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Loans - Logout</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Lien vers une feuille de style CSS externe -->
+</head>
+<body>
+    <div class="logout-container">
+        <div class="logout-box">
+            <h2>You have been logged out</h2>
+            <p>Thank you for using Elite Loans. You can log in again anytime.</p>
+            
+            <form action="login.html" method="GET" class="login-form">
+                <button type="submit" class="btn">Login Again</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

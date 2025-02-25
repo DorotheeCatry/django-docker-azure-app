@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'app',
     'tailwind',
     'theme',
-    'channels',
+    #'channels',
 ]
 
 STATICFILES_DIRS = [

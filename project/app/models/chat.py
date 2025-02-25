@@ -1,23 +1,8 @@
-from django.db import models
-from .users import User
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
 
-class Message(models.Model):
-    """
-    Model for messages exchanged between clients and advisors.
-    """
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Message from {self.sender.username} to {self.receiver.username} at {self.timestamp}"
-    
-    
-    
+   
 # à voir pour le chat --> pip install channels
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):

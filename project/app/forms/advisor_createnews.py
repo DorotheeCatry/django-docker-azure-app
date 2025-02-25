@@ -1,15 +1,14 @@
 from django import forms
-from .models import JobApplication
-
-class ApplicationForm(forms.ModelForm):
+from app.models import News
+from django.contrib.auth.models import User
+class NewsForm(forms.ModelForm):
     """
-    Form for submitting a job application.
+    Formulaire pour soumettre un article d'actualité.
     """
     class Meta:
-        model = JobApplication
-        fields = ["name", "email", "resume", "cover_letter"]
-
-    name = forms.CharField(max_length=255, required=True)
-    email = forms.EmailField(required=True)
-    resume = forms.FileField(required=False)
-    cover_letter = forms.CharField(widget=forms.Textarea, required=True)
+        model = News
+        fields = ["title", "content", "author"]
+    
+    title = forms.CharField(max_length=255, required=True)
+    content = forms.CharField(widget=forms.Textarea, required=True)
+    author = forms.ModelChoiceField(queryset=User.objects.all(), required=True)

@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .forms import UserProfileForm
+from app.forms import UserProfileForm
 from django.contrib.auth import get_user_model
 
 class UserProfileView(LoginRequiredMixin, UpdateView):

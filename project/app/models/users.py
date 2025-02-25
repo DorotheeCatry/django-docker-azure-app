@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-class User(AbstractUser):
+class UserProfile(AbstractUser):
     """
     Modèle utilisateur personnalisé pour gérer les clients et les conseillers bancaires.
     """

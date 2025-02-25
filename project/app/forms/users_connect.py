@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.hashers import make_password
-from .models import UserProfile
+from app.models import UserProfile
 
 class UserProfileForm(forms.ModelForm):
     """
@@ -8,10 +8,8 @@ class UserProfileForm(forms.ModelForm):
     """
     class Meta:
         model = UserProfile
-        fields = [
-            "first_name", "last_name", "username", "email",
-            "smoker", "region", "sex", "num_children", "age", "weight", "height",
-        ]
+        fields = ["username", "email", "first_name", "last_name", "role"]
+
 
 class UserSignupForm(forms.ModelForm):
     """

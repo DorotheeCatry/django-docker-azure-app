@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UserSignupForm, ChangePasswordForm
-from .models import UserProfile
+from app.forms import UserSignupForm, ChangePasswordForm
+from app.models import UserProfile
 from django.views.generic.edit import CreateView
 
 class SignupView(CreateView):

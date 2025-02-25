@@ -1,24 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import UpdateView
 from django.views.generic import ListView
-from django.shortcuts import render
-from django.contrib import messages
 from django.urls import reverse_lazy
-from .models import PredictionHistory
-from .forms import PredictChargesForm
-import os
-import pickle
-import pandas as pd
-from django.conf import settings
+from app.models import PredictionHistory
+from app.forms.client_loanrequest import PredictChargesForm
 from django.db.models import Avg
 
-class PredictChargesView(LoginRequiredMixin, UpdateView):
+class PredictLoanAcceptance(LoginRequiredMixin, UpdateView):
     """
     Handles insurance charge predictions.
     """
     model = PredictionHistory
     form_class = PredictChargesForm
-    template_name = 'insurance_app/predict.html'
+    template_name = 'app/predict.html'
     success_url = reverse_lazy('predict')
 
     # (Code de la view PredictChargesView ici)
@@ -28,7 +22,7 @@ class PredictionHistoryView(LoginRequiredMixin, ListView):
     Displays prediction history for the user.
     """
     model = PredictionHistory
-    template_name = 'insurance_app/prediction_history.html'
+    template_name = 'app/prediction_history.html'
     context_object_name = 'predictions'
     paginate_by = 10
 
