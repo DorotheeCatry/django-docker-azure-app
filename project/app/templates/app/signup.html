@@ -1,28 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}Elite Loans - Login {% endblock %}
+{% block title %}Elite Loans - Signup {% endblock %}
 
 {% block content %}
 
-        <!-- Login Section -->
+        <!-- Sign Up Section -->
         <section class="items-center justify-center bg-gray-50 py-40">
             <div class="container mx-auto px-6 bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
-                <h1 class="text-4xl font-semibold text-gray-900 mb-6">Welcome Back</h1>
-                <p class="text-lg text-gray-600 mb-6">Enter your credentials to access your personal client portal and manage your loans.</p>
+                <h1 class="text-4xl font-semibold text-gray-900 mb-6">Create Your Account</h1>
+                <p class="text-lg text-gray-600 mb-6">Sign up to access your personal client portal and manage your loans.</p>
                 
                 <form action="#" method="POST" class="space-y-6">
                     <div class="space-y-4">
+                        <input type="text" name="full_name" placeholder="Full Name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900">
                         <input type="email" name="email" placeholder="Email Address" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900">
                         <input type="password" name="password" placeholder="Password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900">
+                        <input type="password" name="confirm_password" placeholder="Confirm Password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900">
                     </div>
                     <button type="submit" class="w-full bg-gray-900 text-white px-8 py-3 rounded-full text-lg hover:bg-gray-800 transition-colors">
-                        Login
+                        Sign Up
                     </button>
                     <div class="text-center text-sm text-gray-600 mt-4">
-                        <a href="#" class="hover:text-gray-900 transition-colors">Forgot Password?</a>
-                    </div>
-                    <div class="text-center text-sm text-gray-600">
-                        <span>Don't have an account? </span><a href=/signup/ class="font-semibold text-gray-900 hover:text-gray-800 transition-colors">Sign Up</a>
+                        <span>Already have an account? </span><a href=/login/ class="font-semibold text-gray-900 hover:text-gray-800 transition-colors">Login</a>
                     </div>
                 </form>
             </div>
