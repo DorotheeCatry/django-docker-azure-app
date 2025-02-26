@@ -2,6 +2,7 @@ from django.urls import path
 from app.views.auth import HomeView, CustomLoginView, UserLogoutView, SignupView
 from app.views.auth import HomeView, estimation_history, prediction, login
 
+from app.views.base import loan_request_view
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -12,6 +13,7 @@ urlpatterns = [
     path('history/', estimation_history, name='history'),
     path('prediction/', prediction, name='prediction'), 
     #path('client_loanstatus/', client_loanstatus, name='client_loanstatus'),
+    path('client_loanrequest/', loan_request_view, name = "loan_request")
     #path('welcome/', WelcomeView.as_view(), name='welcome'),
 
     # For the users

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Request - Refined Financial Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Hero Section -->
+    <section class="bg-white py-32">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-16">
+            <div class="md:w-1/2">
+                <h1 class="text-6xl font-light text-gray-900 mb-8 leading-tight tracking-tight">
+                    Demande de Prêt <br>
+                    <span class="font-semibold">Solutions Financières</span>
+                </h1>
+                <p class="text-gray-600 text-lg mb-12 leading-relaxed max-w-xl">
+                    Découvrez nos offres de prêt sur mesure, adaptées à vos besoins financiers. Soumettez votre demande en quelques étapes simples.
+                </p>
+            </div>
+            <div class="md:w-1/2">
+                <img 
+                    src="https://images.unsplash.com/photo-1611095579536-93ec9a1321de?auto=format&fit=crop&w=500&h=500" 
+                    alt="Demande de Prêt" 
+                    class="rounded-3xl shadow-2xl grayscale hover:grayscale-0 transition-all duration-500">
+            </div>
+        </div>
+    </section>
+    
+    <!-- Loan Request Form Section -->
+    <section class="py-32 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="bg-white p-8 rounded-xl shadow-xl max-w-lg mx-auto">
+                <h2 class="text-4xl font-light text-gray-900 mb-8 text-center">Demander un Prêt</h2>
+                
+                <!-- Formulaire de demande -->
+                <form method="POST" action="{% url 'loan_request' %}">
+                    {% csrf_token %}
+                    
+                    <div class="mb-6">
+                        <label for="amount" class="block text-gray-700 text-lg">Montant du Prêt</label>
+                        <input type="number" name="amount" id="amount" class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="term" class="block text-gray-700 text-lg">Durée du Prêt (en mois)</label>
+                        <input type="number" name="term" id="term" class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="low_doc" class="block text-gray-700 text-lg">Documentation Minimale</label>
+                        <select name="low_doc" id="low_doc" class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                            <option value="Y">Oui</option>
+                            <option value="N">Non</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="rev_line_cr" class="block text-gray-700 text-lg">Ligne de Crédit Révisable</label>
+                        <select name="rev_line_cr" id="rev_line_cr" class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                            <option value="1">Oui</option>
+                            <option value="0">Non</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="no_emp" class="block text-gray-700 text-lg">Nombre d'Employés</label>
+                        <input type="number" name="no_emp" id="no_emp" class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="naics" class="block text-gray-700 text-lg">Code NAICS</label>
+                        <input type="text" name="naics" id="naics" class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="state" class="block text-gray-700 text-lg">État (Code à 2 lettres)</label>
+                        <input type="text" name="state" id="state" class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="rural" class="block text-gray-700 text-lg">Localisation</label>
+                        <select name="rural" id="rural" class="w-full mt-2 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500" required>
+                            <option value="0">Urbain</option>
+                            <option value="1">Rural</option>
+                            <option value="None">Non défini</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <button type="submit" class="bg-gray-900 text-white px-12 py-4 rounded-full hover:bg-gray-800 transition-colors">Soumettre la Demande</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-20 border-t border-gray-100 text-center">
+        <div class="container mx-auto px-6">
+            <div class="text-gray-600 text-sm tracking-wide">
+                &copy; 2025 Refined Financial Solutions. TOUS DROITS RÉSERVÉS.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
