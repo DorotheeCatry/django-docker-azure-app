@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="flex flex-col items-center justify-center py-12">
+    <h1 class="text-4xl font-light text-gray-900 mb-6">Chat Room: {{ room_name }}</h1>
+    <div class="bg-gray-50 p-6 rounded-xl shadow-lg w-full max-w-3xl h-96 flex flex-col">
+        <div id="chat-box" class="flex-1 overflow-y-auto p-4 space-y-3 border-b">
+            <!-- Messages seront ajoutés ici -->
+        </div>
+        <div class="mt-4 flex">
+            <input id="message-input" type="text" placeholder="Type a message..." class="flex-1 p-3 border rounded-l-lg">
+            <button id="send-button" class="bg-gray-900 text-white px-6 py-3 rounded-r-lg hover:bg-gray-800">Send</button>
+        </div>
+    </div>
+</section>
+
+<script>
+    const roomName = "{{ room_name }}";
+    const username = "Advisor";  // À remplacer par l'utilisateur connecté
+    const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/");
+
+    chatSocket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        const chatBox = document.getElementById("chat-box");
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("p-3", "rounded-lg", "bg-gray-300", "text-gray-800");
+        messageDiv.textContent = data.username + ": " + data.message;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+
+    document.getElementById("send-button").onclick = function() {
+        const messageInput = document.getElementById("message-input");
+        const message = messageInput.value;
+        chatSocket.send(JSON.stringify({ "message": message, "username": username }));
+        messageInput.value = "";
+    };
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Loan Requests - Elite Loans{% endblock %}
+
+{% block content %}
+<section class="bg-gray-100 min-h-screen py-12 px-6">
+    <div class="container mx-auto max-w-6xl bg-white shadow-lg rounded-lg p-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold text-gray-800">Loan Requests</h2>
+            <svg class="w-8 h-8 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3m4 18V3m4 10h4" />
+            </svg>
+        </div>
+
+        <div class="overflow-hidden rounded-lg shadow-md">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead>
+                    <tr class="bg-gray-800 text-white text-left">
+                        <th class="py-3 px-6">Date</th>
+                        <th class="py-3 px-6">Amount</th>
+                        <th class="py-3 px-6">Duration</th>
+                        <th class="py-3 px-6">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr class="border-b hover:bg-gray-100 transition-all">
+                        <td class="py-4 px-6">{{ loan.created_at|date:"Y-m-d" }}</td>
+                        <td class="py-4 px-6 font-semibold text-gray-700">€{{ loan.amount|floatformat:2 }}</td>
+                        <td class="py-4 px-6">{{ loan.duration_months }} months</td>
+                        <td class="py-4 px-6">
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold {% if loan.status == 'approved' %}bg-green-200 text-green-800{% elif loan.status == 'rejected' %}bg-red-200 text-red-800{% else %}bg-yellow-200 text-yellow-800{% endif %}">
+                                {{ loan.status|title }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-6 text-gray-600">No loan requests found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,52 +1,38 @@
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <title>Espace Conseiller Bancaire</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body class="bg-gray-50">
-    <nav class="bg-white border-b border-gray-100">
-      <div class="max-w-6xl mx-auto px-4">
-        <div class="flex justify-between h-16">
-          <div class="flex">
-            <div class="flex-shrink-0 flex items-center">
-              <h1 class="text-xl font-light tracking-wider text-gray-900">BANQUE<span class="font-medium">NET</span></h1>
-            </div>
-            <div class="hidden sm:ml-10 sm:flex sm:space-x-8">
-              <a href="/" class="border-b-2 border-gray-900 text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
-                Demandes de prêts
-              </a>
-              <a href="/actualites.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 text-sm font-medium">
-                Actualités
-              </a>
-            </div>
-          </div>
-          <div class="flex items-center">
-            <span class="text-sm text-gray-500 font-light">Conseiller: <span class="font-medium text-gray-900">David</span></span>
-          </div>
-        </div>
-      </div>
-    </nav>
+{% extends 'base.html' %}
 
-    <main class="max-w-6xl mx-auto py-8 px-4">
-      <div class="flex justify-between items-center mb-8">
-        <h2 class="text-2xl font-light text-gray-900 tracking-tight">Liste des demandes de prêts</h2>
-        <div class="flex space-x-3">
-          <select id="filterStatus" class="text-sm border-gray-200 rounded-md focus:ring-gray-200 focus:border-gray-400">
-            <option value="all">Tous les statuts</option>
-            <option value="pending">En attente</option>
-            <option value="approved">Approuvé</option>
-            <option value="rejected">Refusé</option>
-          </select>
-        </div>
-      </div>
+{% block title %}Elite Loans - Advisor Dashboard{% endblock %}
 
-      <div class="grid gap-6" id="loanRequests">
-        <!-- Les demandes de prêts seront injectées ici via JavaScript -->
-      </div>
-    </main>
-  </body>
-</html>
+{% block content %}
+<section class="bg-white flex-1 flex flex-col items-center justify-center py-12">
+    <div class="container mx-auto px-6">
+        <h1 class="text-4xl font-light text-gray-900 mb-6">Advisor Dashboard</h1>
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Loan Requests</h2>
+        
+        <div class="bg-gray-50 p-6 rounded-xl shadow-lg w-full max-w-4xl">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-3 text-left">Client</th>
+                        <th class="p-3 text-left">Amount</th>
+                        <th class="p-3 text-left">Status</th>
+                        <th class="p-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr class="border-b">
+                        <td class="p-3">{{ loan.client_name }}</td>
+                        <td class="p-3">${{ loan.amount }}</td>
+                        <td class="p-3">{{ loan.status }}</td>
+                        <td class="p-3">
+                            <a href="{% url 'approve_loan' loan.id %}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Approve</a>
+                            <a href="{% url 'reject_loan' loan.id %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-2">Reject</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

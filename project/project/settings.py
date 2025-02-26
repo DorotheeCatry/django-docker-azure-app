@@ -23,6 +23,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 AUTH_USER_MODEL = 'app.User'
 
+# DATA_URL = "http://127.0.0.1:6000/auth/users"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'app',
     'tailwind',
     'theme',
-    #'channels',
+    'channels',
 ]
 
 STATICFILES_DIRS = [
@@ -152,10 +153,10 @@ AUTH_USER_MODEL = 'app.UserProfile'
 
 
 # Redirect to this URL after successful login
-LOGIN_REDIRECT_URL = '/profile/'
+LOGIN_REDIRECT_URL = '/'
 
 # Redirect to this URL after logout
-LOGOUT_REDIRECT_URL = '/logout_user/'
+LOGOUT_REDIRECT_URL = '/logout/'
 
 # Optional: URL for the login page (used by @login_required decorator)
 LOGIN_URL = '/login/'

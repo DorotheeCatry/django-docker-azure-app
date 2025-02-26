@@ -36,4 +36,4 @@ class LoanRequest(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
-        return f"Loan {self.id} - {self.status} ({self.user.username})"
+        return f"LoanRequest #{self.id} - {self.status} - {self.amount}€ ({self.user.username})"

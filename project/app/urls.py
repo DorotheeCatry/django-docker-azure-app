@@ -1,11 +1,17 @@
 from django.urls import path
 from app.views.auth import HomeView, CustomLoginView, UserLogoutView, SignupView
+from app.views.auth import HomeView, estimation_history, prediction, login
+
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('signup/', SignupView.as_view(), name='signup'),
     path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', UserLogoutView.as_view(), name='logout_user'), 
+    path('logout/', UserLogoutView.as_view(), name='logout_user'),
+    path('login-api/', login, name='login'),
+    path('history/', estimation_history, name='history'),
+    path('prediction/', prediction, name='prediction'), 
+    #path('client_loanstatus/', client_loanstatus, name='client_loanstatus'),
     #path('welcome/', WelcomeView.as_view(), name='welcome'),
 
     # For the users

@@ -9,6 +9,13 @@ from app.forms import UserSignupForm, ChangePasswordForm
 from app.models import UserProfile
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
+import requests
+from django.http import JsonResponse
+
+AUTH_URL = "http://127.0.0.1:6000/auth/login"
+HIST_URL = "http://127.0.0.1:6000/loans/history"
+REQUEST_URL = "http://127.0.0.1:6000/loans/request"
+
 
 class HomeView(TemplateView):
     """
@@ -87,3 +94,40 @@ class UserLogoutView(LoginRequiredMixin, View):
     def post(self, request):
         logout(request)
         return render(request, self.template_name, {'user': None})
+    
+
+
+
+
+def login(request):
+
+    auth_response = requests.post(AUTH_URL, params={"email": "d", "password": "david"})
+    print("Hist Response Status:", auth_response.status_code)
+    print("Hist Response JSON:", auth_response.json()) 
+    if auth_response.status_code != 200:
+        return JsonResponse({"error": "Échec de l'authentification"}, status=auth_response.status_code)
+    
+    token = auth_response.json().get("access_token")  # Extract token
+
+    if not token:
+        return JsonResponse({"error": "Token non reçu"}, status=401)
+    
+    return render(request, 'app/test.html')
+
+
+def estimation_history(request):
+    hist_response = requests.get(HIST_URL, params={"id": 0})
+    print("Hist Response Status:", hist_response.status_code)
+    print("Hist Response JSON:", hist_response.json())  # Check actual response
+    if hist_response.status_code != 200:
+        return JsonResponse({"error": "Erreur API"}, status=hist_response.status_code)
+    return render(request, 'app/test.html')
+
+
+def prediction(request):
+    hist_response = requests.post(REQUEST_URL, json={"id": 0,"GrAppv": 18000,"Term": 1,"State": "CA","NAICS_Sectors": 54000,"New": 0,"Franchise": 0,"NoEmp" : 0,"RevLineCr": 0,"LowDoc": 0,"Rural": 0 })
+    print("Hist Response Status:", hist_response.status_code)
+    print("Hist Response JSON:", hist_response.json())
+    if hist_response.status_code != 200:
+        return JsonResponse({"error": "Erreur API"}, status=hist_response.status_code)
+    return render(request, 'app/test.html')
