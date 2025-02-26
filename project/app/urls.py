@@ -1,13 +1,13 @@
 from django.urls import path
-from app.views.auth import HomeView
+from app.views.auth import HomeView, CustomLoginView, UserLogoutView, SignupView
 from app.views.base import loan_request_view
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
+    path('signup/', SignupView.as_view(), name='signup'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', UserLogoutView.as_view(), name='logout_user'), 
     path('client_loanrequest/', loan_request_view, name = "loan_request")
-    #path('signup/', SignupView.as_view(), name='signup'),
-    #path('login/', CustomLoginView.as_view(), name='login'),
-    #path('logout/', UserLogoutView.as_view(), name='logout_user'), 
     #path('welcome/', WelcomeView.as_view(), name='welcome'),
 
     # For the users
