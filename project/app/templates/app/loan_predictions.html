@@ -44,9 +44,11 @@
                 <th>ID</th>
                 <th>Amount</th>
                 <th>Duration (Months)</th>
-                <th>Reason</th>
+                <th>NAICS</th>
+                <th>rural</th>
+                <th>franchise</th>
+                <th>no_emp</th>
                 <th>Status</th>
-                <th>Prediction Score</th>
             </tr>
         </thead>
         <tbody>
@@ -54,10 +56,12 @@
             <tr>
                 <td>{{ prediction.id }}</td>
                 <td>{{ prediction.amount }}</td>
-                <td>{{ prediction.duration }}</td>
-                <td>{{ prediction.reason }}</td>
+                <td>{{ prediction.term }}</td>
+                <td>{{ prediction.naics }}</td>
+                <td>{{ prediction.rural }}</td>
+                <td>{{ prediction.franchise }}</td>
+                <td>{{ prediction.no_emp }}</td>
                 <td>{{ prediction.status }}</td>
-                <td>{{ prediction.prediction_score }}</td>
             </tr>
             {% empty %}
             <tr>
