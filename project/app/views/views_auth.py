@@ -118,12 +118,12 @@ def login(request):
 
 def loan_predictions(request):
     predictions = LoanRequest.objects.all()  # Fetch all loan requests
-    return render(request, "app/loan_predictions.html", {"predictions": predictions})
+    return render(request, "app/loan-predictions.html", {"predictions": predictions})
 
 
 def validations(request):
     predictions = LoanRequest.objects.all()  # Fetch all loan requests
-    return render(request, "app/loan_predictions.html", {"predictions": predictions})
+    return render(request, "app/loan-predictions.html", {"predictions": predictions})
 
 
 def prediction(request):

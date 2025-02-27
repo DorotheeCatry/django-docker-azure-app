@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import requests
 from app.forms import LoanRequestForm
-from app.models import LoanRequest, UserProfile
+from app.models import LoanRequest
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -20,23 +20,23 @@ def loan_request_view(request):
             loan_request.new = form.cleaned_data['new']
             loan_request.franchise = form.cleaned_data['franchise']
             loan_request.no_emp = form.cleaned_data['no_emp']
-            loan_request.user = UserProfile(id=1)
+            loan_request.user = request.user
             loan_request.save()
             hist_response = requests.post(REQUEST_URL, json={"GrAppv": float(loan_request.amount),"Term": loan_request.term,
-                                                             "State": loan_request.state,"NAICS_Sectors": loan_request.naics,
-                                                             "New": loan_request.new,"Franchise": loan_request.franchise,
-                                                             "NoEmp" : loan_request.no_emp,"RevLineCr": 0,
-                                                             "LowDoc": 0,"Rural": 0 })
+                                                            "State": loan_request.state,"NAICS_Sectors": loan_request.naics,
+                                                            "New": loan_request.new,"Franchise": loan_request.franchise,
+                                                            "NoEmp" : loan_request.no_emp,"RevLineCr": 0,
+                                                            "LowDoc": 0,"Rural": 0 })
             print("Hist Response JSON:", hist_response.json())
             if hist_response.status_code != 200:
                 return JsonResponse({"error": "Erreur API"}, status=hist_response.status_code)
             if not hist_response.json():
                 loan_request.status = "refused"
                 loan_request.save()
-            return render(request, "app/client_loanrequest.html", {"form": form}) 
+            return render(request, "app/client-loanrequest.html", {"form": form}) 
     else:
         form = LoanRequestForm()  # Création d'un formulaire vide pour un GET
-    return render(request, "app/client_loanrequest.html", {"form": form})
+    return render(request, "app/client-loanrequest.html", {"form": form})
 
 
 
@@ -63,4 +63,4 @@ def loan_predictions_view(request):
     predictions = LoanRequest.objects.filter(user_id=1)
 
     # Pass filtered predictions to the template
-    return render(request, "app/client_loan_predictions.html", {"predictions": predictions})
+    return render(request, "app/client-loan-predictions.html", {"predictions": predictions})

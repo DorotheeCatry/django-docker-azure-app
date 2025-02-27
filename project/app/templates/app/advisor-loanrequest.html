@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Predictions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            border-radius: 5px;
+        }
+        .approve {
+            background-color: #28a745;
+        }
+        .reject {
+            background-color: #dc3545;
+        }
+    </style>
+    <script>
+        function updateStatus(predictionId, status) {
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    let statusCell = document.getElementById("status-" + predictionId);
+                    statusCell.innerText = status;
+        
+                    // Hide buttons if status is "Refused"
+                    if (status != "pending") {
+                        let actionCell = statusCell.nextElementSibling; // Get the next <td> (Action column)
+                        actionCell.innerHTML = ""; // Clear the buttons
+                    }
+                } else {
+                    alert("Error updating status!");
+                }
+            });
+        }
+        
+    </script>
+</head>
+<body>
+
+    <h2>Loan Predictions</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Amount</th>
+                <th>Duration (Months)</th>
+                <th>NAICS</th>
+                <th>Rural</th>
+                <th>Franchise</th>
+                <th>No. of Employees</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prediction in predictions %}
+            <tr>
+                <td>{{ prediction.id }}</td>
+                <td>{{ prediction.amount }}</td>
+                <td>{{ prediction.term }}</td>
+                <td>{{ prediction.naics }}</td>
+                <td>{{ prediction.rural }}</td>
+                <td>{{ prediction.franchise }}</td>
+                <td>{{ prediction.no_emp }}</td>
+                <td id="status-{{ prediction.id }}">{{ prediction.status }}</td>
+                <td>
+                    {% if prediction.status == "pending" %}
+                        <button class="btn approve" onclick="updateStatus({{ prediction.id }}, 'approved')">Approve</button>
+                        <button class="btn reject" onclick="updateStatus({{ prediction.id }}, 'rejected')">Reject</button>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">No loan predictions available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

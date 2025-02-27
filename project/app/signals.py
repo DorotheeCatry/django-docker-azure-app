@@ -9,14 +9,14 @@ def add_users():
     """
     users_to_add = [
         # Advisors
-        {"username": "DorotheeAdvisor", "email": "dorothee@advisor.fr", "password": "dorotheepassadvisor", "role": "advisor", "first_name": "Dorothée", "last_name": "Advisor", "is_staff": True},
-        {"username": "DavidAdvisor", "email": "david@advisor.fr", "password": "davidpassadvisor", "role": "advisor", "first_name": "David", "last_name": "Advisor", "is_staff": True},
-        {"username": "SamiAdvisor", "email": "sami@advisor.fr", "password": "samipassadvisor", "role": "advisor", "first_name": "Sami", "last_name": "Advisor", "is_staff": True},
+        {"username": "DorotheeAdvisor", "email": "dorothee@advisor.fr", "password": "doropass", "role": "advisor", "first_name": "Dorothée", "last_name": "Advisor", "is_staff": True},
+        {"username": "DavidAdvisor", "email": "david@advisor.fr", "password": "davidpass", "role": "advisor", "first_name": "David", "last_name": "Advisor", "is_staff": True},
+        {"username": "SamiAdvisor", "email": "sami@advisor.fr", "password": "samipass", "role": "advisor", "first_name": "Sami", "last_name": "Advisor", "is_staff": True},
 
         # Clients
-        {"username": "DorotheeUser", "email": "dorothee@user.fr", "password": "dorotheepassuser", "role": "client", "first_name": "Dorothée", "last_name": "User", "is_staff": False},
-        {"username": "DavidUser", "email": "david@user.fr", "password": "davidpassuser", "role": "client", "first_name": "David", "last_name": "User", "is_staff": False},
-        {"username": "SamiUser", "email": "sami@user.fr", "password": "samipassuser", "role": "client", "first_name": "Sami", "last_name": "User", "is_staff": False},
+        {"username": "DorotheeUser", "email": "dorothee@user.fr", "password": "doropass", "role": "client", "first_name": "Dorothée", "last_name": "User", "is_staff": False},
+        {"username": "DavidUser", "email": "david@user.fr", "password": "davidpass", "role": "client", "first_name": "David", "last_name": "User", "is_staff": False},
+        {"username": "SamiUser", "email": "sami@user.fr", "password": "samipass", "role": "client", "first_name": "Sami", "last_name": "User", "is_staff": False},
     ]
 
     for user_data in users_to_add:
@@ -41,7 +41,7 @@ def add_loans():
     Adds loans to the database from a CSV file.
     """
     # Path to the CSV file
-    file_path = 'project/data/data_django.csv'
+    file_path = 'project/project/data/data_django.csv'
 
     try:
         with open(file_path, mode='r', encoding='utf-8') as file:
@@ -51,7 +51,7 @@ def add_loans():
             for row in reader:
                 # Retrieve the user associated with the loan
                 try:
-                    default_user = UserProfile.objects.get(id=4)
+                    default_user = UserProfile.objects.get(username="DorotheeUser")
                 except UserProfile.DoesNotExist:
                     print(f"User with ID {row['user_id']} not found. Skipped.")
                     continue

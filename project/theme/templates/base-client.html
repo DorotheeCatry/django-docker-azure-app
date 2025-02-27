@@ -17,10 +17,10 @@
                         <span class="text-2xl font-light text-gray-900 tracking-tight">ELITE<span class="font-semibold">LOANS</span></span>
                     </div>
                     <div class="hidden md:flex space-x-12 text-gray-600 text-sm tracking-wide">
-                        <a href="{% url 'client-dashboard' %}" class="{% if request.path == '/client_dashboard/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">DASHBOARD</a>
+                        <a href="{% url 'client-dashboard' %}" class="{% if request.path == '/client-dashboard/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">DASHBOARD</a>
                         <a href="#" class="{% if request.path == '/news/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">NEWS</a>
-                        <a href="#" class="{% if request.path == '/loan_request_form/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN REQUEST</a>
-                        <a href="#" class="{% if request.path == '/loan_status/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN STATUS</a>
+                        <a href="{% url 'client-loanrequest'%}" class="{% if request.path == '/client-loanrequest/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN REQUEST</a>
+                        <a href="{% url 'client-loanstatus'%}" class="{% if request.path == '/client-loanstatus/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN STATUS</a>
                         <a href="#" class="{% if request.path == '/chat/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">CHAT WITH ADVISOR</a>
                     </div>
                     <div class="flex items-center space-x-4">

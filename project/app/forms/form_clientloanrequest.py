@@ -3,7 +3,7 @@ from app.models import LoanRequest
 from django.core.exceptions import ValidationError
 
 
-class LoanRequestForm(forms.ModelForm):
+class ClientLoanRequestForm(forms.ModelForm):
     """
     Formulaire pour les demandes de prêt.
     """
@@ -21,30 +21,24 @@ class LoanRequestForm(forms.ModelForm):
             'rural': forms.Select(choices=[('0', 'Urban'), ('1', 'Rural'), ('None', 'Undefined')]),
         }
 
-
     def clean(self):
-
-        cleaned_data = super().clean()  
+        cleaned_data = super().clean()
 
         amount = cleaned_data.get("amount")
         if amount is not None and amount <= 0:
             raise ValidationError("Le montant doit être supérieur à 0.")
 
-
         term = cleaned_data.get("term")
         if term is not None and term <= 0:
             raise ValidationError("La durée doit être supérieure à 0.")
-
 
         no_emp = cleaned_data.get("no_emp")
         if no_emp is not None and no_emp < 0:
             raise ValidationError("Le nombre d'employés ne peut pas être négatif.")
 
-
         naics = cleaned_data.get("naics")
-        if naics is not None and (not str(naics).isdigit() or len(str(naics)) != 2 ):
+        if naics is not None and (not str(naics).isdigit() or len(str(naics)) != 2):
             raise ValidationError("Le code NAICS doit être un nombre à 2 chiffres.")
-
 
         state = cleaned_data.get("state")
         if state is not None and (not state.isalpha() or len(state) != 2):
@@ -62,6 +56,5 @@ class LoanRequestForm(forms.ModelForm):
             value = cleaned_data.get(field)
             if value is not None and value not in valid_values:
                 raise ValidationError(f"Valeur invalide pour {field}.")
-
 
         return cleaned_data

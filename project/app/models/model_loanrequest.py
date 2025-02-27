@@ -22,10 +22,10 @@ class LoanRequest(models.Model):
     term = models.IntegerField()  # Durée du prêt en mois
     
     # Attributs de la demande de prêt
-    low_doc = models.CharField(max_length=1, choices=[('Y', 'Yes'), ('N', 'No')])  # LowDoc = Y ou N
+    low_doc = models.CharField(max_length=1, choices=[('1', 'Yes'), ('0', 'No')])  # LowDoc = 1 ou 0
     rev_line_cr = models.CharField(max_length=1, choices=[('1', 'Yes'), ('0', 'No')])  # RevLineCr = 1 ou 0
     no_emp = models.FloatField()  # Nombre d'employés
-    naics = models.CharField(max_length=10)  # Code NAICS
+    naics = models.CharField(max_length=2)  # Code NAICS
     new = models.CharField(max_length=1, choices=[('1', 'New'), ('0', 'Existing')])  # New = 1 ou 0
     franchise = models.CharField(max_length=1, choices=[('1', 'Franchise'), ('0', 'Non-Franchise')])  # Franchise = 1 ou 0
 
