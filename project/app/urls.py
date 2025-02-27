@@ -1,8 +1,8 @@
 from django.urls import path
-from project.app.views.views_auth import UserLogoutView, SignupView, CustomLoginAdvisorView, CustomLoginClientView, loan_predictions, validations
-from project.app.views.views_pages import HomeView, AdvisorDashboardView, ClientDashboardView, HomeLoginView
+from app.views.views_auth import UserLogoutView, SignupView, CustomLoginAdvisorView, CustomLoginClientView, loan_predictions, validations
+from app.views.views_pages import HomeView, AdvisorDashboardView, ClientDashboardView, HomeLoginView
 #from app.views.estimation import prediction
-from project.app.views.views_loanrequest import loan_request_view, update_prediction_status, loan_predictions_view
+from app.views.views_loanrequest import loan_request_view, update_prediction_status, loan_predictions_view
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -18,5 +18,6 @@ urlpatterns = [
     path("update_prediction/<int:prediction_id>/", update_prediction_status, name="update_prediction_status"),
     #path('prediction/', prediction, name='prediction'), 
     path('clienthistory/', loan_predictions_view, name='loansprediction'), 
-    path('client-loanrequest/', loan_request_view, name = "loan-request")
+    path('client-loanrequest/', loan_request_view, name = "loan-request"),
+
 ]

@@ -24,11 +24,12 @@
                         <a href="#" class="{% if request.path == '/chat/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">CHAT</a>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <a href="{% url 'logout' %}">
-                            <button class="bg-gray-900 text-white px-8 py-2.5 rounded-full text-sm tracking-wide hover:bg-gray-800 transition-colors">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-gray-900 text-white px-8 py-2.5 rounded-full text-sm tracking-wide hover:bg-gray-800 transition-colors">
                                 LOG OUT
                             </button>
-                        </a>
+                        </form>
                     </div>
                 </div>
             </div>

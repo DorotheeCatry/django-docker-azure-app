@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import JsonResponse
 import requests
 from app.forms import LoanRequestForm
 from app.models import LoanRequest, UserProfile
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 REQUEST_URL="http://127.0.0.1:6000/loans/request"
+
 def loan_request_view(request):
     if request.method == 'POST':
         form = LoanRequestForm(request.POST)
@@ -35,9 +38,6 @@ def loan_request_view(request):
         form = LoanRequestForm()  # Création d'un formulaire vide pour un GET
     return render(request, "app/client_loanrequest.html", {"form": form})
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
 
 
 @csrf_exempt  # Allows AJAX POST requests (ensure CSRF token in production)

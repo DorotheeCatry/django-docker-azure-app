@@ -1,5 +1,4 @@
-from project.app.views.views_profile import UserProfileView
-from project.app.views.views_auth import SignupView, ChangePasswordView, UserLogoutView, CustomLoginClientView, CustomLoginAdvisorView
-from project.app.views.views_pages import HomeView, AdvisorDashboardView, ClientDashboardView, HomeLoginView
-from project.app.views.views_loanrequest import loan_request_view
+from app.views.views_auth import SignupView, ChangePasswordView, UserLogoutView, CustomLoginClientView, CustomLoginAdvisorView, login, loan_predictions, validations, prediction
+from app.views.views_pages import HomeView, AdvisorDashboardView, ClientDashboardView, HomeLoginView
+from app.views.views_loanrequest import loan_request_view, update_prediction_status, loan_predictions_view
 

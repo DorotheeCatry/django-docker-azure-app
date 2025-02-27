@@ -1,6 +1,6 @@
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.auth import logout
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.views import View
@@ -16,7 +16,7 @@ from app.models.model_loanrequest import LoanRequest
 
 HIST_URL = "http://127.0.0.1:6000/loans/history"
 REQUEST_URL = "http://127.0.0.1:6000/loans/request"
-
+AUTH_URL = ""
 
 User = get_user_model()
 
@@ -46,8 +46,10 @@ class CustomLoginClientView(LoginView):
     authentication_form = AuthenticationForm
     template_name = 'app/login-client.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('client-dashboard')
     
+    def get_success_url(self):
+        return reverse('client-dashboard')
+
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             return redirect('client-dashboard')
@@ -60,7 +62,9 @@ class CustomLoginAdvisorView(LoginView):
     authentication_form = AuthenticationForm
     template_name = 'app/login-advisor.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('advisor-dashboard')
+    
+    def get_success_url(self):
+        return reverse('advisor-dashboard')
     
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
