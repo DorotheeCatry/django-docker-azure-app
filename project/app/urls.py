@@ -1,19 +1,22 @@
 from django.urls import path
-from app.views.auth import HomeView, CustomLoginView, UserLogoutView, SignupView
-from app.views.auth import HomeView, estimation_history, prediction, login
-
-from app.views.base import loan_request_view
+from project.app.views.views_auth import UserLogoutView, SignupView, CustomLoginAdvisorView, CustomLoginClientView
+from project.app.views.views_pages import HomeView, AdvisorDashboardView, ClientDashboardView, HomeLoginView
+#from app.views.estimation import estimation_history, prediction
+from project.app.views.views_loanrequest import loan_request_view
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('signup/', SignupView.as_view(), name='signup'),
-    path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', UserLogoutView.as_view(), name='logout_user'),
-    path('login-api/', login, name='login'),
-    path('history/', estimation_history, name='history'),
-    path('prediction/', prediction, name='prediction'), 
+    path('login/', HomeLoginView.as_view(), name='login'),
+    path('login-client/', CustomLoginClientView.as_view(), name='login-client'),
+    path('login-advisor/', CustomLoginAdvisorView.as_view(), name='login-advisor'),
+    path('client-dashboard/', ClientDashboardView.as_view(), name='client-dashboard'),
+    path('advisor-dashboard/', AdvisorDashboardView.as_view(), name='advisor-dashboard'),
+    path('logout/', UserLogoutView.as_view(), name='logout'),
+    #path('history/', estimation_history, name='history'),
+    #path('prediction/', prediction, name='prediction'), 
     #path('client_loanstatus/', client_loanstatus, name='client_loanstatus'),
-    path('client_loanrequest/', loan_request_view, name = "loan_request")
+    path('client-loanrequest/', loan_request_view, name = "loan-request")
     #path('welcome/', WelcomeView.as_view(), name='welcome'),
 
     # For the users

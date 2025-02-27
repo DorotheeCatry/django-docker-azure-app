@@ -5,36 +5,29 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from app.forms import UserSignupForm, ChangePasswordForm
+from app.forms import UserSignupForm, ChangePasswordForm, AuthenticationForm
 from app.models import UserProfile
 from django.views.generic.edit import CreateView
-from django.views.generic import TemplateView
 import requests
 from django.http import JsonResponse
+from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth import get_user_model
 
-AUTH_URL = "http://127.0.0.1:6000/auth/login"
 HIST_URL = "http://127.0.0.1:6000/loans/history"
 REQUEST_URL = "http://127.0.0.1:6000/loans/request"
 
 
-class HomeView(TemplateView):
-    """
-    Renders the homepage.
+User = get_user_model()
 
-    This view is responsible for rendering the 'home.html' template, which serves as the 
-    homepage for the application.
-
-    Attributes:
-        template_name (str): The name of the template used to display the response.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'home.html' template.
-    """
-    template_name = 'app/home.html'  # Home Page View Template
-
+class EmailBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        try:
+            user = User.objects.get(email=username)  # Remplace username par email
+        except User.DoesNotExist:
+            return None
+        if user.check_password(password) and self.user_can_authenticate(user):
+            return user
+        return None
 
 class SignupView(CreateView):
     """
@@ -45,28 +38,34 @@ class SignupView(CreateView):
     template_name = 'app/signup.html'
     success_url = reverse_lazy('login')
 
-class CustomLoginView(LoginView):
+class CustomLoginClientView(LoginView):
     """
-    Custom login view with 'remember me' functionality.
+    Custom login view for clients with 'remember me' functionality.
     """
-    template_name = 'app/login.html'
+    authentication_form = AuthenticationForm
+    template_name = 'app/login-client.html'
     redirect_authenticated_user = True
-
-    def get_success_url(self):
-        return reverse_lazy('welcome')
-
+    success_url = reverse_lazy('client-dashboard')
+    
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect('profile')
+            return redirect('client-dashboard')
         return super().dispatch(request, *args, **kwargs)
 
-    def form_valid(self, form):
-        remember_me = self.request.POST.get('remember_me', None) is not None
-        if not remember_me:
-            self.request.session.set_expiry(0)
-        else:
-            self.request.session.set_expiry(1209600)
-        return super().form_valid(form)
+class CustomLoginAdvisorView(LoginView):
+    """
+    Custom login view for advisors with 'remember me' functionality.
+    """
+    authentication_form = AuthenticationForm
+    template_name = 'app/login-advisor.html'
+    redirect_authenticated_user = True
+    success_url = reverse_lazy('advisor-dashboard')
+    
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('advisor-dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
 
 class ChangePasswordView(PasswordChangeView):
     """
@@ -85,7 +84,7 @@ class UserLogoutView(LoginRequiredMixin, View):
     """
     Handles user logout requests.
     """
-    template_name = 'app/logout_user.html'
+    template_name = 'app/logout.html'
 
     def get(self, request):
         user = self.request.user
@@ -95,24 +94,6 @@ class UserLogoutView(LoginRequiredMixin, View):
         logout(request)
         return render(request, self.template_name, {'user': None})
     
-
-
-
-
-def login(request):
-
-    auth_response = requests.post(AUTH_URL, params={"email": "d", "password": "david"})
-    print("Hist Response Status:", auth_response.status_code)
-    print("Hist Response JSON:", auth_response.json()) 
-    if auth_response.status_code != 200:
-        return JsonResponse({"error": "Échec de l'authentification"}, status=auth_response.status_code)
-    
-    token = auth_response.json().get("access_token")  # Extract token
-
-    if not token:
-        return JsonResponse({"error": "Token non reçu"}, status=401)
-    
-    return render(request, 'app/test.html')
 
 
 def estimation_history(request):

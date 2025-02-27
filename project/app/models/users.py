@@ -7,7 +7,7 @@ class UserProfile(AbstractUser):
     """
     ROLE_CHOICES = [
         ('client', 'Client'),
-        ('conseiller', 'Conseiller Bancaire'),
+        ('advisor', 'Advisor'),
     ]
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='client')

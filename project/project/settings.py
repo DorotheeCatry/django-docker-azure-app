@@ -15,7 +15,6 @@ import os
 from dotenv import load_dotenv
 from shutil import which
 
-
 # Load the environmental variables of fichier .env
 load_dotenv()
 
@@ -35,6 +34,12 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Auth standard
+    'app.views.auth.EmailBackend',  # Auth via email
+]
 
 
 # Application definition
@@ -152,11 +157,8 @@ NPM_BIN_PATH = which("npm")
 AUTH_USER_MODEL = 'app.UserProfile'
 
 
-# Redirect to this URL after successful login
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL_REDIRECT = "/"
 
 # Redirect to this URL after logout
 LOGOUT_REDIRECT_URL = '/logout/'
 
-# Optional: URL for the login page (used by @login_required decorator)
-LOGIN_URL = '/login/'
