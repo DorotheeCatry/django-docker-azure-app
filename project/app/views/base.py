@@ -35,3 +35,24 @@ def loan_request_view(request):
         form = LoanRequestForm()  # Création d'un formulaire vide pour un GET
     return render(request, "app/client_loanrequest.html", {"form": form})
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+
+@csrf_exempt  # Allows AJAX POST requests (ensure CSRF token in production)
+def update_prediction_status(request, prediction_id):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            new_status = data.get("status").lower()
+
+            prediction = LoanRequest.objects.get(id=prediction_id)
+            prediction.status = new_status
+            prediction.save()
+
+            return JsonResponse({"success": True})
+        except LoanRequest.DoesNotExist:
+            return JsonResponse({"error": "Prediction not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

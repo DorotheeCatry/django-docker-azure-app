@@ -2,7 +2,7 @@ from django.urls import path
 from app.views.auth import HomeView, CustomLoginView, UserLogoutView, SignupView, loan_predictions, validations
 from app.views.auth import HomeView, prediction, login
 
-from app.views.base import loan_request_view
+from app.views.base import loan_request_view, update_prediction_status
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('login-api/', login, name='login'),
     path('history/', loan_predictions, name='history'),
     path('validation/', validations, name='validation'),
+    path("update_prediction/<int:prediction_id>/", update_prediction_status, name="update_prediction_status"),
     path('prediction/', prediction, name='prediction'), 
     path('client_loanrequest/', loan_request_view, name = "loan_request")
 ]

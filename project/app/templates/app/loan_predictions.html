@@ -32,7 +32,48 @@
         tr:nth-child(even) {
             background: #f9f9f9;
         }
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            border-radius: 5px;
+        }
+        .approve {
+            background-color: #28a745;
+        }
+        .reject {
+            background-color: #dc3545;
+        }
     </style>
+    <script>
+        function updateStatus(predictionId, status) {
+            fetch(`/update_prediction/${predictionId}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"  // Ensure CSRF token is included
+                },
+                body: JSON.stringify({ status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    let statusCell = document.getElementById("status-" + predictionId);
+                    statusCell.innerText = status;
+        
+                    // Hide buttons if status is "Refused"
+                    if (status != "pending") {
+                        let actionCell = statusCell.nextElementSibling; // Get the next <td> (Action column)
+                        actionCell.innerHTML = ""; // Clear the buttons
+                    }
+                } else {
+                    alert("Error updating status!");
+                }
+            });
+        }
+        
+    </script>
 </head>
 <body>
 
@@ -45,10 +86,11 @@
                 <th>Amount</th>
                 <th>Duration (Months)</th>
                 <th>NAICS</th>
-                <th>rural</th>
-                <th>franchise</th>
-                <th>no_emp</th>
+                <th>Rural</th>
+                <th>Franchise</th>
+                <th>No. of Employees</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -61,11 +103,18 @@
                 <td>{{ prediction.rural }}</td>
                 <td>{{ prediction.franchise }}</td>
                 <td>{{ prediction.no_emp }}</td>
-                <td>{{ prediction.status }}</td>
+                <td id="status-{{ prediction.id }}">{{ prediction.status }}</td>
+                <td>
+                    {% if prediction.status == "pending" %}
+                        <button class="btn approve" onclick="updateStatus({{ prediction.id }}, 'approved')">Approve</button>
+                        <button class="btn reject" onclick="updateStatus({{ prediction.id }}, 'rejected')">Reject</button>
+                    {% endif %}
+                </td>
+
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6">No loan predictions available.</td>
+                <td colspan="9">No loan predictions available.</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -73,3 +122,4 @@
 
 </body>
 </html>
+
