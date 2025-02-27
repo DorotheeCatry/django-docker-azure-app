@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
 import requests
 from django.http import JsonResponse
+from app.models.loanrequest import LoanRequest
 
 AUTH_URL = "http://127.0.0.1:6000/auth/login"
 HIST_URL = "http://127.0.0.1:6000/loans/history"
@@ -96,9 +97,6 @@ class UserLogoutView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'user': None})
     
 
-
-
-
 def login(request):
 
     auth_response = requests.post(AUTH_URL, params={"email": "d", "password": "david"})
@@ -115,13 +113,14 @@ def login(request):
     return render(request, 'app/test.html')
 
 
-def estimation_history(request):
-    hist_response = requests.get(HIST_URL, params={"id": 0})
-    print("Hist Response Status:", hist_response.status_code)
-    print("Hist Response JSON:", hist_response.json())  # Check actual response
-    if hist_response.status_code != 200:
-        return JsonResponse({"error": "Erreur API"}, status=hist_response.status_code)
-    return render(request, 'app/test.html')
+def loan_predictions(request):
+    predictions = LoanRequest.objects.all()  # Fetch all loan requests
+    return render(request, "app/loan_predictions.html", {"predictions": predictions})
+
+
+def validations(request):
+    predictions = LoanRequest.objects.all()  # Fetch all loan requests
+    return render(request, "app/loan_predictions.html", {"predictions": predictions})
 
 
 def prediction(request):

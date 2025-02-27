@@ -41,7 +41,7 @@ def add_loans():
     Adds loans to the database from a CSV file.
     """
     # Path to the CSV file
-    file_path = 'project/project/data/data_django.csv'
+    file_path = 'project/data/data_django.csv'
 
     try:
         with open(file_path, mode='r', encoding='utf-8') as file:
