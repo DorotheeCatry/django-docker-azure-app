@@ -56,3 +56,11 @@ def update_prediction_status(request, prediction_id):
             return JsonResponse({"error": "Prediction not found"}, status=404)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
+
+
+def loan_predictions_view(request):
+    # Filter predictions for user_id == 1
+    predictions = LoanRequest.objects.filter(user_id=1)
+
+    # Pass filtered predictions to the template
+    return render(request, "app/client_loan_predictions.html", {"predictions": predictions})
