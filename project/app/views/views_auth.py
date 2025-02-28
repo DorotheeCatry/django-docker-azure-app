@@ -13,10 +13,12 @@ from django.http import JsonResponse
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from app.models.model_loanrequest import LoanRequest
+import os
+from dotenv import load_dotenv, set_key
 
-HIST_URL = "http://127.0.0.1:6000/loans/history"
-REQUEST_URL = "http://127.0.0.1:6000/loans/request"
-AUTH_URL = ""
+ENV_FILE = ".env"
+load_dotenv()
+AUTH_URL = os.getenv("AUTH_URL")
 
 User = get_user_model()
 
@@ -54,6 +56,30 @@ class CustomLoginClientView(LoginView):
         if self.request.user.is_authenticated:
             return redirect('client-dashboard')
         return super().dispatch(request, *args, **kwargs)
+    
+    def connect_to_api(self):
+        if self.request.user.is_authenticated:
+            print("hi")
+            username = os.getenv("API_USERNAME")
+            password = os.getenv("API_PASSWORD")
+        
+            if not username or password:
+                raise Exception("NO")
+            
+            login_data = {
+                "username": username,
+                "password": password
+            }
+            
+            response = requests.post(AUTH_URL, json=login_data)
+            if response.status_code == 200:
+                token = response.json()["access_token"]
+                set_key(ENV_FILE, "API_TOKEN", token)
+                
+                print(token)
+                return token
+            else:
+                raise Exception("Failed to login at the API")
 
 class CustomLoginAdvisorView(LoginView):
     """

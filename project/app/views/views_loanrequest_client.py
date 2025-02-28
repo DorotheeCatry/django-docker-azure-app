@@ -75,4 +75,4 @@ def loan_predictions_view(request):
     predictions = LoanRequest.objects.filter(user=user)
 
     # Pass filtered predictions to the template
-    return render(request, "app/client-loan-predictions.html", {"predictions": predictions})
+    return render(request, "app/client-loanstatus.html", {"predictions": predictions})
