@@ -20,7 +20,7 @@
                         <a href="{% url 'client-dashboard' %}" class="{% if request.path == '/client-dashboard/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">DASHBOARD</a>
                         <a href="#" class="{% if request.path == '/news/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">NEWS</a>
                         <a href="{% url 'client-loanrequest'%}" class="{% if request.path == '/client-loanrequest/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN REQUEST</a>
-                        <a href="{% url 'client-loanstatus'%}" class="{% if request.path == '/client-loanstatus/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN STATUS</a>
+                        <a href="{% url 'client-loan-predictions'%}" class="{% if request.path == '/client-loan-predictions/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN STATUS</a>
                         <a href="#" class="{% if request.path == '/chat/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">CHAT WITH ADVISOR</a>
                     </div>
                     <div class="flex items-center space-x-4">

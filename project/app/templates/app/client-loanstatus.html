@@ -25,7 +25,6 @@
                         <td class="py-3 px-4">{{ loan.term }} months</td>
                         <td class="py-3 px-4">
                             <span class="px-2 py-1 rounded text-xs font-medium {% if loan.status == '1' %}bg-green-200 text-green-800{% elif loan.status == '0' %}bg-red-200 text-red-800{% else %}bg-yellow-200 text-yellow-800{% endif %}">
-                                {% if loan.status == '1' %}Accepted{% elif loan.status == '0' %}Rejected{% else %}Pending{% endif %}
                             </span>
                         </td>
                     </tr>

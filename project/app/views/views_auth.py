@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from app.models.model_loanrequest import LoanRequest
+from django.contrib.auth.decorators import login_required
 
 HIST_URL = "http://127.0.0.1:6000/loans/history"
 REQUEST_URL = "http://127.0.0.1:6000/loans/request"
@@ -102,7 +103,7 @@ class UserLogoutView(LoginRequiredMixin, View):
 
 def login(request):
 
-    auth_response = requests.post(AUTH_URL, params={"email": "d", "password": "david"})
+    auth_response = requests.post(AUTH_URL, params={"email": "d", "password": "davdorothee@advisor.frid"})
     print("Hist Response Status:", auth_response.status_code)
     print("Hist Response JSON:", auth_response.json()) 
     if auth_response.status_code != 200:
@@ -115,15 +116,10 @@ def login(request):
     
     return render(request, 'app/test.html')
 
-
+@login_required
 def loan_predictions(request):
     predictions = LoanRequest.objects.all()  # Fetch all loan requests
-    return render(request, "app/loan-predictions.html", {"predictions": predictions})
-
-
-def validations(request):
-    predictions = LoanRequest.objects.all()  # Fetch all loan requests
-    return render(request, "app/loan-predictions.html", {"predictions": predictions})
+    return render(request, "app/advisor-loan-predictions.html", {"predictions": predictions})
 
 
 def prediction(request):

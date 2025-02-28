@@ -19,8 +19,8 @@
 
                         <!-- GrAppv (Loan Amount Requested) -->
                         <div class="mb-4">
-                            <label for="grAppv" class="block text-gray-700 text-sm">Requested Loan Amount *</label>
-                            <input type="number" name="grAppv" id="grAppv" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                            <label for="amount" class="block text-gray-700 text-sm">Requested Loan Amount *</label>
+                            <input type="number" name="amount" id="amount" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
                             <p class="text-xs text-gray-500 mt-2">The amount of the loan you are requesting. This is the total loan amount you would like to borrow.</p>
                         </div>
 
@@ -54,6 +54,13 @@
                                 <option value="0">No</option>
                             </select>
                             <p class="text-xs text-gray-500 mt-2">Indicate whether your business is newly established (1 for Yes, 0 for No).</p>
+                        </div>
+
+                        <!-- NoEmp -->
+                        <div class="mb-4">
+                            <label for="no_emp" class="block text-gray-700 text-sm">Number of Employees *</label>
+                            <input type="number" name="no_emp" id="no_emp" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                            <p class="text-xs text-gray-500 mt-2">The total number of employees working in your business.</p>
                         </div>
 
                         <!-- Franchise (Franchise Status) -->

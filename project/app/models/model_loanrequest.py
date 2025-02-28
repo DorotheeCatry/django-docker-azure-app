@@ -14,6 +14,7 @@ class LoanRequest(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='loan_requests')
+    advisor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='advisor')
     created_at = models.DateTimeField(auto_now_add=True)  # Date de création
     updated_at = models.DateTimeField(auto_now=True)  # Dernière mise à jour
     

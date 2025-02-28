@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+```<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -48,6 +48,14 @@
     </style>
     <script>
         function updateStatus(predictionId, status) {
+            fetch(`/update_prediction/${predictionId}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"  // Ensure CSRF token is included
+                },
+                body: JSON.stringify({ status: status })
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -114,3 +122,4 @@
 
 </body>
 </html>
+```

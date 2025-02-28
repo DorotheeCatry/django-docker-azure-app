@@ -18,7 +18,7 @@
                     </div>
                     <div class="hidden md:flex space-x-12 text-gray-600 text-sm tracking-wide">
                         <a href="{% url 'advisor-dashboard' %}" class="{% if request.path == '/advisor-dashboard/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">DASHBOARD</a>
-                        <a href="#" class="{% if request.path == '/loan_requests/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN REQUESTS</a>
+                        <a href="{% url 'advisor-loanrequest' %}" class="{% if request.path == '/advisor-loanrequest/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">LOAN REQUESTS</a>
                         <a href="#" class="{% if request.path == '/clients/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">CLIENTS</a>
                         <a href="#" class="{% if request.path == '/news/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">NEWS</a>
                         <a href="#" class="{% if request.path == '/chat/' %}font-semibold text-gray-900{% else %}hover:text-gray-900 transition-colors{% endif %}">CHAT</a>
