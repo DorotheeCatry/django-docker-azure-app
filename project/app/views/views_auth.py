@@ -13,7 +13,6 @@ from django.http import JsonResponse
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from app.models.model_loanrequest import LoanRequest
-from django.contrib.auth.decorators import login_required
 
 HIST_URL = "http://127.0.0.1:6000/loans/history"
 REQUEST_URL = "http://127.0.0.1:6000/loans/request"
@@ -116,16 +115,3 @@ def login(request):
     
     return render(request, 'app/test.html')
 
-@login_required
-def loan_predictions(request):
-    predictions = LoanRequest.objects.all()  # Fetch all loan requests
-    return render(request, "app/advisor-loan-predictions.html", {"predictions": predictions})
-
-
-def prediction(request):
-    hist_response = requests.post(REQUEST_URL, json={"id": 0,"GrAppv": 18000,"Term": 1,"State": "CA","NAICS_Sectors": 54000,"New": 0,"Franchise": 0,"NoEmp" : 0,"RevLineCr": 0,"LowDoc": 0,"Rural": 0 })
-    print("Hist Response Status:", hist_response.status_code)
-    print("Hist Response JSON:", hist_response.json())
-    if hist_response.status_code != 200:
-        return JsonResponse({"error": "Erreur API"}, status=hist_response.status_code)
-    return render(request, 'app/test.html')

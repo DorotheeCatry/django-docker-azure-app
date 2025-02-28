@@ -9,6 +9,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import json
 from app.models import LoanRequest
+from django.contrib.auth.decorators import login_required
+
 
 class AdvisorLoanRequestView(ListView):
     """
@@ -30,3 +32,8 @@ class AdvisorLoanRequestView(ListView):
         context = super().get_context_data(**kwargs)
         context['loans'] = context['object_list']  # Renomme 'object_list' en 'loans'
         return context
+    
+@login_required
+def loan_predictions(request):
+    predictions = LoanRequest.objects.all()  # Fetch all loan requests
+    return render(request, "app/advisor-loan-predictions.html", {"predictions": predictions})
