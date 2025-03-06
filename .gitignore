@@ -90,3 +90,7 @@ Desktop.ini
 *.sqlite3
 *.db
 *.sql
+
+
+# Docker 
+.log
