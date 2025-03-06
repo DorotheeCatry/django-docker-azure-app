@@ -41,62 +41,57 @@ class SignupView(CreateView):
     template_name = 'app/signup.html'
     success_url = reverse_lazy('login')
 
-class CustomLoginClientView(LoginView):
+class ClientLoginView(LoginView):
     """
-    Custom login view for clients with 'remember me' functionality.
+    Login view for clients only.
     """
     authentication_form = AuthenticationForm
-    template_name = 'app/login-client.html'
-    redirect_authenticated_user = True
+    
+    def get_template_names(self):
+        if self.request.user.is_authenticated:
+            if self.request.user.role == 'client':
+                return 'app/login-client.html'
+            else:
+                messages.error(self.request, "Accès non autorisé. Vous n'êtes pas un client.")
+                return 'app/error-page.html'  # Page d'erreur
+        return 'app/login-client.html'
     
     def get_success_url(self):
         return reverse('client-dashboard')
-
+    
     def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
+        if request.user.is_authenticated:
+            if request.user.role != 'client':
+                messages.error(request, "Accès non autorisé. Vous devez être un client.")
+                return redirect('error-page')
             return redirect('client-dashboard')
         return super().dispatch(request, *args, **kwargs)
-    
-    def connect_to_api(self):
-        if self.request.user.is_authenticated:
-            print("hi")
-            username = os.getenv("API_USERNAME")
-            password = os.getenv("API_PASSWORD")
-        
-            if not username or password:
-                raise Exception("NO")
-            
-            login_data = {
-                "username": username,
-                "password": password
-            }
-            
-            response = requests.post(AUTH_URL, json=login_data)
-            if response.status_code == 200:
-                token = response.json()["access_token"]
-                set_key(ENV_FILE, "API_TOKEN", token)
-                
-                print(token)
-                return token
-            else:
-                raise Exception("Failed to login at the API")
 
-class CustomLoginAdvisorView(LoginView):
+class AdvisorLoginView(LoginView):
     """
-    Custom login view for advisors with 'remember me' functionality.
+    Login view for advisors only.
     """
     authentication_form = AuthenticationForm
-    template_name = 'app/login-advisor.html'
-    redirect_authenticated_user = True
+    
+    def get_template_names(self):
+        if self.request.user.is_authenticated:
+            if self.request.user.role == 'advisor':
+                return 'app/login-advisor.html'
+            else:
+                messages.error(self.request, "Accès non autorisé. Vous n'êtes pas un conseiller.")
+                return 'app/error-page.html'
+        return 'app/login-advisor.html'
     
     def get_success_url(self):
         return reverse('advisor-dashboard')
     
     def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            return redirect('advisor-dashboard')
+        if request.user.is_authenticated:
+            if request.user.role != 'advisor':
+                messages.error(request, "Accès non autorisé. Vous devez être un conseiller.")
+                return redirect('error-page')  # Redirection vers une page d'erreur
+            return redirect('advisor-dashboard')  # Rediriger vers le tableau de bord si déjà connecté
         return super().dispatch(request, *args, **kwargs)
-
 
 class ChangePasswordView(PasswordChangeView):
     """

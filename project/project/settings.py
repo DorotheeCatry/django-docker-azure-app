@@ -18,9 +18,23 @@ from shutil import which
 # Load the environmental variables of fichier .env
 load_dotenv()
 
+# Django settings
+DEBUG = os.getenv("DJANGO_DEBUG") == "True"
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
+
+# API settings
+API_USERNAME = os.getenv("API_USERNAME")
+API_PASSWORD = os.getenv("API_PASSWORD")
+API_BASE_URL = os.getenv("API_BASE_URL")
+API_AUTH_URL = os.getenv("API_AUTH_URL")
+API_LOANREQUEST_URL = os.getenv("API_LOANREQUEST_URL")
+API_HIST_URL = os.getenv("API_HIST_URL")
+API_TOKEN = os.getenv("API_TOKEN")
+API_USER_ID = os.getenv("API_USER_ID")
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-AUTH_USER_MODEL = 'app.User'
 
 # DATA_URL = "http://127.0.0.1:6000/auth/users"
 
@@ -28,7 +42,7 @@ AUTH_USER_MODEL = 'app.User'
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

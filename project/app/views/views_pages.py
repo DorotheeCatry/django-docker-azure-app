@@ -57,21 +57,3 @@ class ClientDashboardView(TemplateView):
     """
     template_name = 'app/client-dashboard.html'
         
-        
-class AdvisorDashboardView(TemplateView):
-    """
-    Renders the advisor dashboard.
-
-    This view is responsible for rendering the 'advisor_dashboard.html' template, which serves as the 
-    dashboard for the advisors.
-
-    Attributes:
-        template_name (str): The name of the template used to display the response.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'advisor_dashboard.html' template.
-    """
-    template_name = 'app/advisor-dashboard.html'

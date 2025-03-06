@@ -1,125 +1,80 @@
-```<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Predictions</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        h2 {
-            color: #333;
-        }
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        th {
-            background: #007BFF;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-        .btn {
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-            color: white;
-            border-radius: 5px;
-        }
-        .approve {
-            background-color: #28a745;
-        }
-        .reject {
-            background-color: #dc3545;
-        }
-    </style>
-    <script>
-        function updateStatus(predictionId, status) {
-            fetch(`/update_prediction/${predictionId}/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": "{{ csrf_token }}"  // Ensure CSRF token is included
-                },
-                body: JSON.stringify({ status: status })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    let statusCell = document.getElementById("status-" + predictionId);
-                    statusCell.innerText = status;
-        
-                    // Hide buttons if status is "Refused"
-                    if (status != "pending") {
-                        let actionCell = statusCell.nextElementSibling; // Get the next <td> (Action column)
-                        actionCell.innerHTML = ""; // Clear the buttons
-                    }
-                } else {
-                    alert("Error updating status!");
-                }
-            });
-        }
-        
-    </script>
-</head>
-<body>
+{% extends 'base-advisor.html' %}
 
-    <h2>Loan Predictions</h2>
+{% block title %}Elite Loans - Loan Predictions{% endblock %}
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Amount</th>
-                <th>Duration (Months)</th>
-                <th>NAICS</th>
-                <th>Rural</th>
-                <th>Franchise</th>
-                <th>No. of Employees</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for prediction in predictions %}
-            <tr>
-                <td>{{ prediction.id }}</td>
-                <td>{{ prediction.amount }}</td>
-                <td>{{ prediction.term }}</td>
-                <td>{{ prediction.naics }}</td>
-                <td>{{ prediction.rural }}</td>
-                <td>{{ prediction.franchise }}</td>
-                <td>{{ prediction.no_emp }}</td>
-                <td id="status-{{ prediction.id }}">{{ prediction.status }}</td>
-                <td>
-                    {% if prediction.status == "pending" %}
-                        <button class="btn approve" onclick="updateStatus({{ prediction.id }}, 'approved')">Approve</button>
-                        <button class="btn reject" onclick="updateStatus({{ prediction.id }}, 'rejected')">Reject</button>
-                    {% endif %}
-                </td>
+{% block content %}
+<!-- Page Container -->
 
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="9">No loan predictions available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<section>
+    <div class="container mx-auto px-6">
+            <!-- Table Section -->
+            <div class="overflow-hidden rounded-lg shadow-lg">
+                <table class="w-full text-gray-900">
+                    <thead class="bg-gray-900 text-white uppercase text-sm tracking-wider">
+                        <tr>
+                            <th class="py-4 px-6 text-left">ID</th>
+                            <th class="py-4 px-6 text-left">Amount</th>
+                            <th class="py-4 px-6 text-left">Duration</th>
+                            <th class="py-4 px-6 text-left">NAICS</th>
+                            <th class="py-4 px-6 text-left">Rural</th>
+                            <th class="py-4 px-6 text-left">Franchise</th>
+                            <th class="py-4 px-6 text-left">Employees</th>
+                            <th class="py-4 px-6 text-left">Status</th>
+                            <th class="py-4 px-6 text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for prediction in predictions %}
+                        <tr class="bg-white hover:bg-gray-50">
+                            <td class="py-4 px-6">{{ prediction.id }}</td>
+                            <td class="py-4 px-6">${{ prediction.amount }}</td>
+                            <td class="py-4 px-6">{{ prediction.term }} months</td>
+                            <td class="py-4 px-6">{{ prediction.naics }}</td>
+                            <td class="py-4 px-6">{{ prediction.rural }}</td>
+                            <td class="py-4 px-6">{{ prediction.franchise }}</td>
+                            <td class="py-4 px-6">{{ prediction.no_emp }}</td>
+                            <td class="py-4 px-6 font-semibold" id="status-{{ prediction.id }}">{{ prediction.status }}</td>
+                            <td class="py-4 px-6">
+                                {% if prediction.status == "pending" %}
+                                    <button class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition" onclick="updateStatus({{ prediction.id }}, 'approved')">Approve</button>
+                                    <button class="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition ml-2" onclick="updateStatus({{ prediction.id }}, 'rejected')">Reject</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" class="py-6 text-center text-gray-500">No loan predictions available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
 
-</body>
-</html>
-```
+<script>
+    function updateStatus(predictionId, status) {
+        fetch(`/update_prediction/${predictionId}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({ status: status })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                let statusCell = document.getElementById("status-" + predictionId);
+                statusCell.innerText = status;
+                statusCell.classList.add(status === 'approved' ? 'text-green-600' : 'text-red-600');
+                statusCell.nextElementSibling.innerHTML = "";
+            } else {
+                alert("Error updating status!");
+            }
+        });
+    }
+</script>
+
+{% endblock %}
