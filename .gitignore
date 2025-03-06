@@ -4,6 +4,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.__init__.py
 
 # 🔧 Local configurations and secrets (if any)
 .env
@@ -28,4 +29,8 @@ migrations
 # 🐳 Docker and IDE
 docker-compose.override.yml
 .vscode/
-.idea/
+.idea/*.csv
+*.parquet
+.venv/
+.venv
+venv
