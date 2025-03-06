@@ -29,6 +29,7 @@ target/
 
 # Environnements virtuels
 venv/
+.venv
 .venv/
 .env/
 env/
