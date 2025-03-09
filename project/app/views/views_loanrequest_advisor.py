@@ -1,12 +1,12 @@
 from django.views.generic import TemplateView, DetailView
 from app.models import LoanRequest, UserProfile
-from django.db.models import Sum, Avg
-from django.core.exceptions import PermissionDenied
+from django.db.models import Sum, Avg, Count, F, ExpressionWrapper, fields
 from django.shortcuts import get_object_or_404
 import json
-from decimal import Decimal
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime, timedelta
+from django.db.models.functions import ExtractDay
 
 # Page 1 - Advisor Dashboard
 class AdvisorDashboardView(TemplateView):
@@ -14,46 +14,62 @@ class AdvisorDashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # Vérifier que l'utilisateur est bien un conseiller
         advisor_profile = self.request.user
-        if not hasattr(advisor_profile, 'role') or advisor_profile.role != 'advisor':
-            raise PermissionDenied("You must be an advisor to access this page.")
+        now = datetime.now()
+        month_ago = now - timedelta(days=30)
 
-        # Récupérer les clients de cet advisor
-        clients = UserProfile.objects.filter(advisor_id=advisor_profile.id)
-        context['clients'] = clients
-
-        # Récupérer les demandes de prêt en attente
-        predictions = LoanRequest.objects.filter(advisor=advisor_profile, status='pending')
-        context['predictions'] = predictions
-        
-        # Statistiques globales sur les prêts
+        # Base queryset for loan requests
         loan_requests = LoanRequest.objects.filter(advisor=advisor_profile)
-        total_loaned = round(loan_requests.aggregate(total_amount=Sum('amount'))['total_amount']) or Decimal(0)
-        avg_loan = round(loan_requests.aggregate(average_amount=Avg('amount'))['average_amount']) or Decimal(0)
-        total_count = loan_requests.count()
-        approved_count = loan_requests.filter(status='approved').count()
-        approval_rate = round((approved_count / total_count * 100)) if total_count else 0
-
-        # Convertir Decimal en float
-        context['total_loaned'] = int(total_loaned)
-        context['avg_loan'] = int(avg_loan)
-        context['approval_rate'] = int(approval_rate)
-
-        # Données pour le graphique (montants prêtés par date)
-        loan_data = loan_requests.values('created_at__date').annotate(total=Sum('amount')).order_by('created_at__date')
-        loan_dates = [entry['created_at__date'].strftime("%Y-%m-%d") for entry in loan_data]
-        loan_amounts = [int(entry['total']) if entry['total'] else 0 for entry in loan_data]
-
-        # Passer les données en JSON
-        context['loan_dates'] = json.dumps(loan_dates)
-        context['loan_amounts'] = json.dumps(loan_amounts)
-
-        # Debugging
-        print("Loan Dates:", context['loan_dates'])
-        print("Loan Amounts:", context['loan_amounts'])
         
+        # Current month and previous month loans
+        current_month_loans = loan_requests.filter(created_at__month=now.month)
+        previous_month_loans = loan_requests.filter(created_at__month=(now.month-1 if now.month > 1 else 12))
+
+        # Calculate loan growth
+        current_month_total = current_month_loans.aggregate(total=Sum('amount'))['total'] or 0
+        previous_month_total = previous_month_loans.aggregate(total=Sum('amount'))['total'] or 1  # Avoid division by zero
+        loan_growth = ((current_month_total - previous_month_total) / previous_month_total) * 100
+
+        # Basic statistics
+        total_loaned = loan_requests.aggregate(total=Sum('amount'))['total'] or 0
+        avg_loan = loan_requests.aggregate(avg=Avg('amount'))['avg'] or 0
+        total_loans = loan_requests.count()
+        approved_count = loan_requests.filter(status='approved').count()
+        pending_count = loan_requests.filter(status='pending').count()
+        rejected_count = loan_requests.filter(status='rejected').count()
+        approval_rate = round((approved_count / total_loans * 100)) if total_loans else 0
+
+        # Client statistics
+        active_clients = loan_requests.values('user').distinct().count()
+        new_clients = loan_requests.filter(
+            created_at__gte=month_ago
+        ).values('user').distinct().count()
+
+        # Loan trend data
+        loan_data = loan_requests.values('created_at__date').annotate(
+            total=Sum('amount')
+        ).order_by('created_at__date')
+        
+        loan_dates = [entry['created_at__date'].strftime("%Y-%m-%d") for entry in loan_data]
+        loan_amounts = [float(entry['total']) if entry['total'] else 0 for entry in loan_data]
+
+        context.update({
+            'now': now,
+            'total_loaned': int(total_loaned),
+            'avg_loan': int(avg_loan),
+            'total_loans': total_loans,
+            'loan_growth': loan_growth,
+            'approval_rate': approval_rate,
+            'approved_count': approved_count,
+            'pending_count': pending_count,
+            'rejected_count': rejected_count,
+            'active_clients_count': active_clients,
+            'new_clients_count': new_clients,
+            'loan_dates': json.dumps(loan_dates),
+            'loan_amounts': json.dumps(loan_amounts),
+            'recent_loans': loan_requests.select_related('user').order_by('-created_at')[:10]
+        })
+
         return context
     
 

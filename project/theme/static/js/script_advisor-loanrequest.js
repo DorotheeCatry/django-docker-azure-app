@@ -3,53 +3,62 @@ document.addEventListener("DOMContentLoaded", function () {
     const startDate = document.getElementById("startDate");
     const endDate = document.getElementById("endDate");
     const tableBody = document.getElementById("tableBody");
-    const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value; // CSRF sécurisé
+    const originalRows = Array.from(tableBody.getElementsByTagName("tr"));
 
     function filterAndSortTable() {
-        let selectedClient = clientSelect.value;
-        let start = startDate.value ? new Date(startDate.value) : null;
-        let end = endDate.value ? new Date(endDate.value) : null;
+        const selectedClient = clientSelect.value;
+        const start = startDate.value ? new Date(startDate.value) : null;
+        const end = endDate.value ? new Date(endDate.value) : null;
 
-        // Vider complètement le tableau avant de commencer le filtrage
+        // Clear the table body
         tableBody.innerHTML = "";
 
-        // Récupérer toutes les lignes de la table
-        let rows = Array.from(document.querySelectorAll("#tableBody tr"));
+        // Create a copy of the original rows for filtering
+        let filteredRows = originalRows.filter(row => {
+            const clientId = row.getAttribute("data-client");
+            const loanDateStr = row.getAttribute("data-date");
 
-        // Filtrer les lignes selon le client sélectionné et les dates
-        let filteredRows = rows.filter(row => {
-            let clientId = row.getAttribute("data-client");
-            let loanDateStr = row.getAttribute("data-date");
+            if (!loanDateStr) return false;
 
-            if (!loanDateStr) {
-                console.warn("Ligne ignorée car `data-date` est manquant :", row);
-                return false; // Ignore les lignes sans date
-            }
-
-            let loanDate = new Date(loanDateStr);
-            let clientMatch = (selectedClient === "" || clientId === selectedClient);
-            let dateMatch = (!start || loanDate >= start) && (!end || loanDate <= end);
+            const loanDate = new Date(loanDateStr);
+            const clientMatch = !selectedClient || clientId === selectedClient;
+            const dateMatch = (!start || loanDate >= start) && (!end || loanDate <= end);
 
             return clientMatch && dateMatch;
         });
 
-        // Trier les lignes par ID décroissant (du plus grand au plus petit)
+        // Sort rows by ID (most recent first)
         filteredRows.sort((a, b) => {
-            let idA = parseInt(a.getAttribute("data-id")) || 0;
-            let idB = parseInt(b.getAttribute("data-id")) || 0;
-            return idB - idA; // Tri décroissant
+            const idA = parseInt(a.getAttribute("data-id")) || 0;
+            const idB = parseInt(b.getAttribute("data-id")) || 0;
+            return idB - idA;
         });
 
-        // Ajouter les lignes filtrées et triées dans le tableau
-        filteredRows.forEach(row => tableBody.appendChild(row));
+        // Add filtered and sorted rows back to the table
+        filteredRows.forEach(row => {
+            // Create a clone of the row to avoid reference issues
+            const newRow = row.cloneNode(true);
+            tableBody.appendChild(newRow);
+        });
 
-        // Appliquer les événements sur les boutons après le filtrage
+        // Show "No results" message if no rows match
+        if (filteredRows.length === 0) {
+            const noResultsRow = document.createElement("tr");
+            noResultsRow.innerHTML = `
+                <td colspan="9" class="py-6 text-center text-gray-500">
+                    No loan predictions available for the selected filters.
+                </td>
+            `;
+            tableBody.appendChild(noResultsRow);
+        }
+
+        // Reapply event listeners to the new rows
         applyStatusChangeEventListeners();
     }
 
     function updateStatus(loanId, status) {
         const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-        fetch(`/update_loan_status/${loanId}/`, {
+        fetch(`/update_prediction/${loanId}/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -60,22 +69,27 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    let statusCell = document.getElementById("status-" + loanId);
+                    const statusCell = document.getElementById(`status-${loanId}`);
                     statusCell.innerText = status;
-                    statusCell.classList.add(status === "approved" ? "text-green-600" : "text-red-600");
+                    statusCell.className = `py-4 px-6 font-semibold ${status === "approved" ? "text-green-600" : "text-red-600"
+                        }`;
 
-                    if (statusCell.nextElementSibling) {
-                        statusCell.nextElementSibling.innerHTML = "";
+                    // Remove action buttons after status update
+                    const actionCell = statusCell.nextElementSibling;
+                    if (actionCell) {
+                        actionCell.innerHTML = "";
                     }
                 } else {
                     alert("Error updating status!");
                 }
             })
-            .catch(error => console.error("Error:", error));
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error updating status!");
+            });
     }
 
     function applyStatusChangeEventListeners() {
-        // Ajouter des écouteurs pour les boutons de mise à jour
         document.querySelectorAll(".approve-btn").forEach(button => {
             button.addEventListener("click", function () {
                 updateStatus(this.dataset.id, "approved");
@@ -89,11 +103,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Ajout des Event Listeners pour filtrer et trier les prêts
+    // Add event listeners
     clientSelect.addEventListener("change", filterAndSortTable);
     startDate.addEventListener("change", filterAndSortTable);
     endDate.addEventListener("change", filterAndSortTable);
 
-    // Appliquer le tri et le filtrage au chargement de la page
-    filterAndSortTable();
+    // Store initial table state
+    applyStatusChangeEventListeners();
 });

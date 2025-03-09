@@ -25,7 +25,7 @@ User = get_user_model()
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            user = User.objects.get(email=username)  # Remplace username par email
+            user = User.objects.get(email=username)  # Replace username with email
         except User.DoesNotExist:
             return None
         if user.check_password(password) and self.user_can_authenticate(user):
@@ -52,8 +52,8 @@ class ClientLoginView(LoginView):
             if self.request.user.role == 'client':
                 return 'app/login-client.html'
             else:
-                messages.error(self.request, "Accès non autorisé. Vous n'êtes pas un client.")
-                return 'app/error-page.html'  # Page d'erreur
+                messages.error(self.request, "Unauthorized access. You are not a client.")
+                return 'app/login.html'  # Error page
         return 'app/login-client.html'
     
     def get_success_url(self):
@@ -62,8 +62,8 @@ class ClientLoginView(LoginView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             if request.user.role != 'client':
-                messages.error(request, "Accès non autorisé. Vous devez être un client.")
-                return redirect('error-page')
+                messages.error(request, "Unauthorized access. You must be a client.")
+                return redirect('login')
             return redirect('client-dashboard')
         return super().dispatch(request, *args, **kwargs)
 
@@ -78,8 +78,8 @@ class AdvisorLoginView(LoginView):
             if self.request.user.role == 'advisor':
                 return 'app/login-advisor.html'
             else:
-                messages.error(self.request, "Accès non autorisé. Vous n'êtes pas un conseiller.")
-                return 'app/error-page.html'
+                messages.error(self.request, "Unauthorized access. You are not an advisor.")
+                return 'app/login.html'
         return 'app/login-advisor.html'
     
     def get_success_url(self):
@@ -88,23 +88,10 @@ class AdvisorLoginView(LoginView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             if request.user.role != 'advisor':
-                messages.error(request, "Accès non autorisé. Vous devez être un conseiller.")
-                return redirect('error-page')  # Redirection vers une page d'erreur
-            return redirect('advisor-dashboard')  # Rediriger vers le tableau de bord si déjà connecté
+                messages.error(request, "Unauthorized access. You must be an advisor.")
+                return redirect('login')
+            return redirect('advisor-dashboard')
         return super().dispatch(request, *args, **kwargs)
-
-class ChangePasswordView(PasswordChangeView):
-    """
-    Handles password change requests.
-    """
-    form_class = ChangePasswordForm
-    template_name = 'app/changepassword.html'
-    success_url = reverse_lazy('profile')
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, 'Your password has been changed successfully!')
-        return response
 
 class UserLogoutView(LoginRequiredMixin, View):
     """
@@ -120,19 +107,4 @@ class UserLogoutView(LoginRequiredMixin, View):
         logout(request)
         return render(request, self.template_name, {'user': None})
     
-
-def login(request):
-
-    auth_response = requests.post(AUTH_URL, params={"email": "d", "password": "davdorothee@advisor.frid"})
-    print("Hist Response Status:", auth_response.status_code)
-    print("Hist Response JSON:", auth_response.json()) 
-    if auth_response.status_code != 200:
-        return JsonResponse({"error": "Échec de l'authentification"}, status=auth_response.status_code)
-    
-    token = auth_response.json().get("access_token")  # Extract token
-
-    if not token:
-        return JsonResponse({"error": "Token non reçu"}, status=401)
-    
-    return render(request, 'app/test.html')
 

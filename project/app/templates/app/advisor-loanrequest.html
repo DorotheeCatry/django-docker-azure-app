@@ -50,7 +50,7 @@
                     <td class="py-4 px-6">{{ loan.user.username }}</td>
                     <td class="py-4 px-6">{{ loan.created_at|date:"Y-m-d" }}</td>
                     <td class="py-4 px-6">${{ loan.amount|floatformat:2 }}</td>
-                    <td class="py-4 px-6">{{ loan.duration }} months</td>
+                    <td class="py-4 px-6">{{ loan.term }} months</td>
                     <td class="py-4 px-6 font-semibold" id="status-{{ loan.id }}">
                         <span class="{% if loan.status == 'approved' %}text-green-600{% elif loan.status == 'rejected' %}text-red-600{% else %}text-gray-600{% endif %}">
                             {{ loan.status }}

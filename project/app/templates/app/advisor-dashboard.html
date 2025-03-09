@@ -1,112 +1,155 @@
 {% extends 'base-advisor.html' %}
+{% load static %}
 
 {% block content %}
-<section class="py-8">
-    <div class="container mx-auto px-4">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">Advisor Dashboard</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            <!-- Pending Loans Section -->
-            <div class="bg-white p-4 rounded-lg shadow">
-                <h2 class="text-xl font-semibold text-gray-800 mb-3">Pending Loan Requests</h2>
-                <div class="overflow-hidden rounded-lg">
-                    <table class="w-full text-gray-900 text-sm">
-                        <thead class="bg-gray-900 text-white uppercase tracking-wide">
+<div class="min-h-screen bg-[#F9FAFB] py-8">
+    <div class="container mx-auto px-6">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-bold text-[#0D1A34]">Advisor Dashboard</h1>
+            <div class="text-sm text-gray-600">
+                Last updated: {{ now|date:"F d, Y H:i" }}
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Loaned</p>
+                        <p class="text-2xl font-bold text-[#0D1A34]">${{ total_loaned }}</p>
+                        <p class="text-sm text-{% if loan_growth >= 0 %}green-600{% else %}red-600{% endif %}">
+                            {{ loan_growth|floatformat:1 }}% vs last month
+                        </p>
+                    </div>
+                    <div class="text-[#C9A05F]">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Average Loan</p>
+                        <p class="text-2xl font-bold text-[#0D1A34]">${{ avg_loan }}</p>
+                        <p class="text-sm text-gray-500">{{ total_loans }} total loans</p>
+                    </div>
+                    <div class="text-[#C9A05F]">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Approval Rate</p>
+                        <p class="text-2xl font-bold text-[#0D1A34]">{{ approval_rate }}%</p>
+                        <p class="text-sm text-gray-500">{{ approved_count }} approved</p>
+                    </div>
+                    <div class="text-[#C9A05F]">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Active Clients</p>
+                        <p class="text-2xl font-bold text-[#0D1A34]">{{ active_clients_count }}</p>
+                        <p class="text-sm text-gray-500">{{ new_clients_count }} new this month</p>
+                    </div>
+                    <div class="text-[#C9A05F]">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6 mb-8">
+            <!-- Loan Trends Chart - plus large -->
+            <div class="col-span-2 bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-[#0D1A34] mb-4">Loan Amount Trends</h2>
+                <canvas id="loanTrendsChart" class="w-full h-34"></canvas>
+            </div>
+        
+            <!-- Loan Distribution Chart - plus petit -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold text-[#0D1A34] mb-4">Loan Status Distribution</h2>
+                <canvas id="loanDistributionChart" class="w-full h-40"></canvas>
+            </div>
+        </div>
+        
+
+        <div class="grid grid-cols-1">
+            <!-- Recent Loan Requests -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-md">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-[#0D1A34]">Recent Loan Requests</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <th class="py-2 px-3 text-left">Client</th>
-                                <th class="py-2 px-3 text-left">Amount</th>
-                                <th class="py-2 px-3 text-left">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            {% for prediction in predictions %}
-                            <tr class="bg-white hover:bg-gray-50">
-                                <td class="py-2 px-3">{{ prediction.user.username }}</td>
-                                <td class="py-2 px-3">${{ prediction.amount }}</td>
-                                <td class="py-2 px-3 font-medium">{{ prediction.status }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="3" class="py-4 text-center text-gray-500">No pending loan requests.</td>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for loan in recent_loans|slice:":5" %}
+                            <tr class="text-sm">
+                                <td class="px-4 py-2 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="ml-2">
+                                            <div class="font-medium text-gray-900">{{ loan.user.username }}</div>
+                                            <div class="text-gray-500">{{ loan.user.email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-2 whitespace-nowrap text-gray-900">${{ loan.amount }}</td>
+                                <td class="px-4 py-2 whitespace-nowrap text-gray-900">{{ loan.term }} months</td>
+                                <td class="px-4 py-2 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full 
+                                        {% if loan.status == 'approved' %}bg-green-100 text-green-800
+                                        {% elif loan.status == 'rejected' %}bg-red-100 text-red-800
+                                        {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                        {{ loan.status|title }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-2 whitespace-nowrap text-gray-500">
+                                    {{ loan.created_at|date:"M d, Y" }}
+                                </td>
                             </tr>
                             {% endfor %}
-                        </tbody>
+                        </tbody>                        
                     </table>
                 </div>
             </div>
-
-            <!-- Clients Section -->
-            <div class="bg-white p-4 rounded-lg shadow">
-                <h2 class="text-xl font-semibold text-gray-800 mb-3">Your Clients</h2>
-                <ul class="divide-y divide-gray-200 text-sm">
-                    {% for client in clients %}
-                    <li class="py-3 flex justify-between items-center">
-                        <div>
-                            <p class="font-medium text-gray-900">{{ client.username }}</p>
-                            <p class="text-gray-600">{{ client.email }}</p>
-                        </div>
-                        <a href="{% url 'client_details' client.id %}" class="text-blue-600 hover:underline">View Details</a>
-                    </li>
-                    {% empty %}
-                    <li class="py-4 text-center text-gray-500">No clients assigned.</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-        <!-- Analytics & Visualization Section -->
-        <div class="bg-white p-4 rounded-lg shadow mt-4">
-            <h2 class="text-xl font-semibold text-gray-800 mb-3">Loan Analysis & Insights</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center text-sm">
-                <div class="p-3 bg-gray-100 rounded shadow">
-                    <h3 class="font-medium text-gray-700">Total Amount Loaned</h3>
-                    <p class="text-lg font-bold text-gray-900">${{ total_loaned }}</p>
-                </div>
-                <div class="p-3 bg-gray-100 rounded shadow">
-                    <h3 class="font-medium text-gray-700">Average Loan Amount</h3>
-                    <p class="text-lg font-bold text-gray-900">${{ avg_loan }}</p>
-                </div>
-                <div class="p-3 bg-gray-100 rounded shadow">
-                    <h3 class="font-medium text-gray-700">Approval Rate</h3>
-                    <p class="text-lg font-bold text-gray-900">{{ approval_rate }}%</p>
-                </div>
-            </div>
-            <div class="mt-4">
-                <h3 class="font-medium text-gray-700">Loan Growth Over Time</h3>
-                <canvas id="loanChart" class="w-full h-48"></canvas>
-            </div>
         </div>
     </div>
-</section>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var loanDates = JSON.parse('{{ loan_dates|escapejs }}');
-    var loanAmounts = JSON.parse('{{ loan_amounts|escapejs }}');
-
-    console.log("Loan Dates:", loanDates);
-    console.log("Loan Amounts:", loanAmounts);
-
-    var ctx = document.getElementById('loanChart').getContext('2d');
-    var loanChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: loanDates,
-            datasets: [{
-                label: 'Loan Amount Over Time',
-                data: loanAmounts,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.3,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: { title: { display: true, text: 'Date' } },
-                y: { title: { display: true, text: 'Loan Amount ($)' } }
-            }
-        }
-    });
+    var loanDates = {{ loan_dates|safe }};
+    var loanAmounts = {{ loan_amounts|safe }};
+    var approvedCount = {{ approved_count }};
+    var pendingCount = {{ pending_count }};
+    var rejectedCount = {{ rejected_count }};
 </script>
+<script src="{% static 'js/script_advisor-dashboard.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 {% endblock %}
