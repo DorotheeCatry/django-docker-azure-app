@@ -1,81 +1,14 @@
-from django.shortcuts import render
-from django.views.generic import ListView, TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView
 from app.models import LoanRequest, UserProfile
-from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Avg
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 import json
 from decimal import Decimal
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-
-
-class AdvisorLoanRequestView(ListView):
-    """
-    Displays loan predictions for the authenticated user.
-    """
-    model = LoanRequest
-    template_name = "app/advisor-loanrequest.html"
-
-    def get_queryset(self):
-        """
-        Filters the loan predictions to show only those of the currently logged-in user.
-        """
-        return LoanRequest.objects.filter(user=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        """
-        Adds the loan requests to the template context under the key 'loans'.
-        """
-        context = super().get_context_data(**kwargs)
-        context['loans'] = context['object_list']  # Renomme 'object_list' en 'loans'
-        
-        advisor_profile = self.request.user
-        if not hasattr(advisor_profile, 'role') or advisor_profile.role != 'advisor':
-            raise PermissionDenied("You must be an advisor to access this page.")
-
-        # Récupérer les clients de cet advisor
-        clients = UserProfile.objects.filter(advisor_id=advisor_profile.id)
-        context['clients'] = clients
-
-        # Récupérer les demandes de prêt en attente
-        predictions = LoanRequest.objects.filter(advisor=advisor_profile, status='pending')
-        context['predictions'] = predictions
-        # Statistiques globales sur les prêts
-        loan_requests = LoanRequest.objects.filter(advisor=advisor_profile)
-        total_loaned = round(loan_requests.aggregate(total_amount=Sum('amount'))['total_amount']) or Decimal(0)
-        avg_loan = round(loan_requests.aggregate(average_amount=Avg('amount'))['average_amount']) or Decimal(0)
-        total_count = loan_requests.count()
-        approved_count = loan_requests.filter(status='approved').count()
-        approval_rate = round((approved_count / total_count * 100)) if total_count else 0
-
-        # Convertir Decimal en float
-        context['total_loaned'] = int(total_loaned)
-        context['avg_loan'] = int(avg_loan)
-        context['approval_rate'] = int(approval_rate)
-
-        # Données pour le graphique (montants prêtés par date)
-        loan_data = loan_requests.values('created_at__date').annotate(total=Sum('amount')).order_by('created_at__date')
-        loan_dates = [entry['created_at__date'].strftime("%Y-%m-%d") for entry in loan_data]
-        loan_amounts = [int(entry['total']) if entry['total'] else 0 for entry in loan_data]
-
-        # Passer les données en JSON
-        context['loan_dates'] = json.dumps(loan_dates)
-        context['loan_amounts'] = json.dumps(loan_amounts)
-
-        # Debugging
-        print("Loan Dates:", context['loan_dates'])
-        print("Loan Amounts:", context['loan_amounts'])
-
-        return context
-    
-@login_required
-def loan_predictions(request):
-    predictions = LoanRequest.objects.all()  # Fetch all loan requests
-    return render(request, "app/advisor-loanrequest.html", {"predictions": predictions})
-
-
-
+# Page 1 - Advisor Dashboard
 class AdvisorDashboardView(TemplateView):
     template_name = 'app/advisor-dashboard.html'
 
@@ -94,6 +27,7 @@ class AdvisorDashboardView(TemplateView):
         # Récupérer les demandes de prêt en attente
         predictions = LoanRequest.objects.filter(advisor=advisor_profile, status='pending')
         context['predictions'] = predictions
+        
         # Statistiques globales sur les prêts
         loan_requests = LoanRequest.objects.filter(advisor=advisor_profile)
         total_loaned = round(loan_requests.aggregate(total_amount=Sum('amount'))['total_amount']) or Decimal(0)
@@ -119,8 +53,10 @@ class AdvisorDashboardView(TemplateView):
         # Debugging
         print("Loan Dates:", context['loan_dates'])
         print("Loan Amounts:", context['loan_amounts'])
-
+        
         return context
+    
+
 
 
 class ClientDetailsView(DetailView):
@@ -146,3 +82,74 @@ class ClientDetailsView(DetailView):
 
         # Retourner le contexte avec les informations supplémentaires
         return context
+
+# Page 2 - Advisor Loan Requests
+class AdvisorLoanRequestView(TemplateView):
+    """
+    Displays loan predictions for the authenticated user.
+    """
+    model = LoanRequest
+    template_name = "app/advisor-loanrequest.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        Adds the loan requests to the template context under the key 'loans'.
+        """
+        context = super().get_context_data(**kwargs)
+
+        # Get advisor profile
+        advisor_profile = self.request.user
+
+        # Get clients for this advisor
+        clients = UserProfile.objects.filter(advisor_id=advisor_profile.id)
+        context['clients'] = clients
+
+        # Get all loan requests for this advisor
+        loans = LoanRequest.objects.filter(advisor_id=advisor_profile.id)
+        context['loans'] = loans
+
+        # Global statistics
+        loan_requests = LoanRequest.objects.filter(advisor_id=advisor_profile.id)
+        total_loaned = loan_requests.aggregate(total_amount=Sum('amount'))['total_amount'] or Decimal(0)
+        avg_loan = loan_requests.aggregate(average_amount=Avg('amount'))['average_amount'] or Decimal(0)
+        total_count = loan_requests.count()
+        approved_count = loan_requests.filter(status='approved').count()
+        approval_rate = round((approved_count / total_count * 100)) if total_count else 0
+
+        # Convert Decimal to int
+        context['total_loaned'] = int(total_loaned)
+        context['avg_loan'] = int(avg_loan)
+        context['approval_rate'] = approval_rate
+
+        # Loan data for charts (loan amounts by date)
+        loan_data = loan_requests.values('created_at').annotate(total=Sum('amount')).order_by('created_at')
+        loan_dates = [entry['created_at'].strftime("%Y-%m-%d") for entry in loan_data]
+        loan_amounts = [int(entry['total']) if entry['total'] else 0 for entry in loan_data]
+
+        # Pass data in JSON format
+        context['loan_dates'] = json.dumps(loan_dates)
+        context['loan_amounts'] = json.dumps(loan_amounts)
+
+        return context
+
+
+# Update the loan request status, only done by the proper advisor
+@csrf_exempt  # Allows AJAX POST requests (ensure CSRF token in production)
+def update_loan_status(request, loan_id):
+    """
+    Updates the status of a loan request.
+    """
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            new_status = data.get("status").lower()
+
+            loan = LoanRequest.objects.get(id=loan_id)
+            loan.status = new_status
+            loan.save()
+
+            return JsonResponse({"success": True})
+        except LoanRequest.DoesNotExist:
+            return JsonResponse({"error": "Loan not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

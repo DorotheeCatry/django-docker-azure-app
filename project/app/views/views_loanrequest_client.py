@@ -94,26 +94,6 @@ def loan_request_view(request):
         form = LoanRequestForm()
     return render(request, "app/client-loanrequest.html", {"form": form})
 
-
-
-
-@csrf_exempt  # Allows AJAX POST requests (ensure CSRF token in production)
-def update_prediction_status(request, prediction_id):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            new_status = data.get("status").lower()
-
-            prediction = LoanRequest.objects.get(id=prediction_id)
-            prediction.status = new_status
-            prediction.save()
-
-            return JsonResponse({"success": True})
-        except LoanRequest.DoesNotExist:
-            return JsonResponse({"error": "Prediction not found"}, status=404)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-        
         
 def submit_loan_request(request, loan_id):
     """

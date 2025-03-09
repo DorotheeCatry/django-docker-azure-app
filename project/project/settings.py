@@ -10,53 +10,43 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from shutil import which
 
-# Load the environmental variables of fichier .env
+# Load environment variables from the .env file
 load_dotenv()
 
-# Django settings
+# Basic Django settings
 DEBUG = os.getenv("DJANGO_DEBUG") == "True"
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")  # Default empty value if not set
 
 # API settings
-API_USERNAME = os.getenv("API_USERNAME")
-API_PASSWORD = os.getenv("API_PASSWORD")
-API_BASE_URL = os.getenv("API_BASE_URL")
-API_AUTH_URL = os.getenv("API_AUTH_URL")
-API_LOANREQUEST_URL = os.getenv("API_LOANREQUEST_URL")
-API_HIST_URL = os.getenv("API_HIST_URL")
-API_TOKEN = os.getenv("API_TOKEN")
-API_USER_ID = os.getenv("API_USER_ID")
+API_SETTINGS = {
+    "API_USERNAME": os.getenv("API_USERNAME"),
+    "API_PASSWORD": os.getenv("API_PASSWORD"),
+    "API_BASE_URL": os.getenv("API_BASE_URL"),
+    "API_AUTH_URL": os.getenv("API_AUTH_URL"),
+    "API_LOANREQUEST_URL": os.getenv("API_LOANREQUEST_URL"),
+    "API_HIST_URL": os.getenv("API_HIST_URL"),
+    "API_TOKEN": os.getenv("API_TOKEN"),
+    "API_USER_ID": os.getenv("API_USER_ID")
+}
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Set the base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# DATA_URL = "http://127.0.0.1:6000/auth/users"
+# Security settings
+SECRET_KEY = os.getenv("SECRET_KEY")  # Secret key should remain secret
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['127.0.0.1']
-
-
+# Authentication configuration
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # Auth standard
-    'app.views.views_auth.EmailBackend',  # Auth via email
+    'django.contrib.auth.backends.ModelBackend',  # Standard authentication
+    'app.views.views_auth.EmailBackend',  # Email-based authentication
 ]
 
-# Application definition
-
+# Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -64,21 +54,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_browser_reload',
-    
+    'django_browser_reload',  # For page reload without losing state
     'app',
     'tailwind',
     'theme',
     'channels',
 ]
 
+# Static files directories
 STATICFILES_DIRS = [
-    BASE_DIR / "project" / "static",
+    BASE_DIR / "theme" / "static"
 ]
+# Static files (CSS, JavaScript, Images) settings
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles' 
+
 
 # Tailwind CSS settings
 TAILWIND_APP_NAME = 'theme'
 
+# Middleware configuration
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -88,15 +83,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
-
 ]
 
+# URL configuration
 ROOT_URLCONF = 'project.urls'
 
+# Templates settings
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'app' / 'templates' ],
+        'DIRS': [BASE_DIR / 'app' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,24 +105,19 @@ TEMPLATES = [
     },
 ]
 
+# WSGI and ASGI applications
 WSGI_APPLICATION = 'project.wsgi.application'
 ASGI_APPLICATION = 'project.asgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Database configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',  # Using SQLite for development
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
+# Password validation settings
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -142,35 +133,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
+# Internationalization settings
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = '/static/'
-
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Path to the NPM executable
 NPM_BIN_PATH = which("npm")
 
+# Custom user model
 AUTH_USER_MODEL = 'app.UserProfile'
 
-LOGIN_URL_REDIRECT = "/"
-
-# Redirect to this URL after logout
+# Redirects after login and logout
+LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = '/logout/'
-

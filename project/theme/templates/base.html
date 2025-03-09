@@ -1,3 +1,4 @@
+<!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,45 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Elite Loans{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lien vers Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #0D1A34;
+            --color-accent: #C9A05F;
+            --color-text: #2D3748;
+            --color-bg: #F9FAFB;
+        }
+    </style>
 </head>
-
-<body class="bg-gray-50">
+<body class="bg-[var(--color-bg)] text-[var(--color-text)]">
     <div class="flex flex-col min-h-screen">
-        <!-- Navigation -->
-        <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 backdrop-blur-lg bg-white/80">
-            <div class="container mx-auto px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-2xl font-light text-gray-900 tracking-tight">ELITE<span class="font-semibold">LOANS</span></span>
-                    </div>
-                    <div class="hidden md:flex space-x-12 text-gray-600 text-sm tracking-wide">
-                        <a href="{% url 'home'%}" class="hover:text-gray-900 transition-colors">HOME</a>
-                        <a href="#" class="hover:text-gray-900 transition-colors">SERVICES</a>
-                        <a href="#" class="hover:text-gray-900 transition-colors">ABOUT</a>
-                        <a href="#" class="hover:text-gray-900 transition-colors">CONTACT</a>
-                    </div>
-                        <a href=/login/>
-                            <button class="bg-gray-900 text-white px-8 py-2.5 rounded-full text-sm tracking-wide hover:bg-gray-800 transition-colors">
-                            PORTAL
-                            </button>
-                        </a>
+        <nav class="bg-[var(--color-primary)] text-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-lg">
+            <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+                <a href="/">
+                    <img src="/static/images/logo-eliteloans.png" alt="Elite Loans Logo" class="h-8">
+                </a>                
+                <div class="hidden md:flex space-x-12 text-white text-sm tracking-wide">
+                    <a href="{% url 'home' %}" class="{% if request.path == '/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">HOME</a>
+                    <a href="{% url 'home-services' %}" class="{% if request.path == '/services/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">SERVICES</a>
+                    <a href="{% url 'home-about' %}" class="{% if request.path == '/about/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">ABOUT</a>
+                    <a href="{% url 'home-contact' %}" class="{% if request.path == '/contact/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">CONTACT</a>                    
                 </div>
+                <a href="/login/">
+                    <button class="bg-[#a17a3c] text-white px-8 py-2.5 rounded-full text-sm tracking-wide 
+                    transition-all duration-300 hover:bg-opacity-90 hover:shadow-xl">PORTAL</button>                
+                </a>
             </div>
         </nav>
         
-        <!-- Main Content -->
-        <div>
+        <div class="flex-1 flex flex-col">
             {% block content %}
-            <!-- Default content can be placed here or left empty to be filled by child templates -->
             {% endblock %}
         </div>
 
-        <!-- Footer -->
-        <footer class="bg-white py-4 border-t border-gray-100 text-center mt-auto">
+        <footer class="bg-[var(--color-primary)] text-white py-4 text-center mt-auto">
             <div class="container mx-auto px-4">
-            <div class="text-gray-600 text-sm tracking-wide">
-                &copy; 2025 ELITELOAN. ALL RIGHTS RESERVED.
-            </div>
+                <div class="text-sm">&copy; 2025 ELITE LOANS. ALL RIGHTS RESERVED.</div>
             </div>
         </footer>
     </div>

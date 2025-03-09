@@ -1,133 +1,61 @@
-/* Importation des styles de base de Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Personnalisation des styles */
+@layer base {
 
-/* Conteneur principal */
-.container {
-    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    html,
+    body {
+        @apply h-full overflow-hidden;
+    }
+
+    h1 {
+        @apply font-serif text-3xl text-primary font-semibold tracking-wide;
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-sans text-primary text-lg;
+    }
+
+    p {
+        @apply text-gray-700 leading-relaxed;
+    }
+
+    a {
+        @apply text-primary hover:text-accent transition-colors;
+    }
 }
 
-/* Boutons élégants */
-.btn-elegant {
-    @apply px-4 py-2 rounded-md font-medium text-center shadow-md transition duration-300 ease-in-out;
-    @apply bg-accent-700 text-white hover:bg-accent-600;
-}
+@layer components {
+    .btn-primary {
+        @apply bg-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition-opacity text-sm;
+    }
 
-.btn-elegant:hover {
-    @apply shadow-lg;
-}
+    .btn-large {
+        @apply px-12 py-3 text-lg font-semibold;
+    }
 
-/* Champs de formulaire élégants */
-.input-elegant {
-    @apply w-full px-4 py-2 border border-accent-100 rounded-md shadow-sm;
-    @apply focus:outline-none focus:ring-2 focus:ring-accent-600 focus:border-accent-600;
-}
+    .nav-link {
+        @apply text-white hover:text-accent transition-colors uppercase tracking-wider text-xs;
+    }
 
-/* Texte d'en-tête */
-.text-header {
-    @apply text-3xl font-light text-accent-700;
-}
+    .card {
+        @apply bg-white rounded-2xl shadow-lg p-6 hover:shadow-md transition-shadow;
+    }
 
-/* Texte secondaire */
-.text-secondary {
-    @apply text-accent-500;
-}
+    .stat-value {
+        @apply text-primary font-semibold text-2xl;
+    }
 
-/* Ombres élégantes */
-.shadow-elegant {
-    @apply shadow-lg;
-}
+    .stat-label {
+        @apply text-gray-600 text-xs uppercase tracking-wider;
+    }
 
-/* Couleurs personnalisées */
-.bg-accent-700 {
-    @apply bg-gray-700;
-}
-
-.text-accent-700 {
-    @apply text-gray-700;
-}
-
-.text-accent-500 {
-    @apply text-gray-500;
-}
-
-.text-accent-600 {
-    @apply text-gray-600;
-}
-
-.border-accent-100 {
-    @apply border-gray-200;
-}
-
-/* Icônes */
-.icon {
-    @apply h-14 w-14 text-accent-600;
-}
-
-/* Mise en page */
-.min-h-screen {
-    @apply min-h-screen bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8;
-}
-
-.card {
-    @apply bg-white py-10 px-8 shadow-elegant border border-accent-100 sm:rounded-lg;
-}
-
-/* Titres */
-.title {
-    @apply mt-8 text-center text-3xl font-light text-accent-700;
-}
-
-.subtitle {
-    @apply mt-2 text-center text-accent-500;
-}
-
-/* Formulaire */
-.form {
-    @apply space-y-6;
-}
-
-.form-label {
-    @apply block text-sm font-medium text-accent-700;
-}
-
-.form-input {
-    @apply input-elegant;
-}
-
-.form-button {
-    @apply w-full btn-elegant;
-}
-
-/* Texte centré */
-.text-center {
-    @apply text-center;
-}
-
-/* Classes utilitaires */
-.flex-center {
-    @apply flex justify-center;
-}
-
-.h-full {
-    @apply h-full;
-}
-
-.w-full {
-    @apply w-full;
-}
-
-.mt-10 {
-    @apply mt-10;
-}
-
-.mt-8 {
-    @apply mt-8;
-}
-
-.mt-2 {
-    @apply mt-2;
+    .tagline {
+        @apply italic font-serif text-sm text-gray-500;
+    }
 }
