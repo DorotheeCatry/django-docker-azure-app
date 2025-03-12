@@ -19,8 +19,8 @@ from shutil import which
 load_dotenv()
 
 # Basic Django settings
-DEBUG = os.getenv("DJANGO_DEBUG") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")  # Default empty value if not set
+DEBUG = os.getenv("DJANGO_DEBUG")
+ALLOWED_HOSTS = ['*']
 
 # API settings
 API_SETTINGS = {
@@ -54,11 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_browser_reload',  # For page reload without losing state
     'app',
     'tailwind',
-    'theme',
-    'channels',
+    'theme'
 ]
 
 # Static files directories
@@ -82,8 +80,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 # URL configuration
 ROOT_URLCONF = 'project.urls'
@@ -110,12 +111,32 @@ WSGI_APPLICATION = 'project.wsgi.application'
 ASGI_APPLICATION = 'project.asgi.application'
 
 # Database configuration
+DB_USERNAME = os.getenv("DB_USERNAME")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_SERVER = os.getenv("DB_SERVER")
+DB_NAME = os.getenv("DB_NAME")
+DB_PORT = os.getenv("DB_PORT")
+DB_DRIVER = os.getenv("DB_DRIVER")
+DATABASE_URL = os.getenv("DATABASE_URL")
+DB_ENGINE = os.getenv("DB_ENGINE")
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Using SQLite for development
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': DB_ENGINE,  
+        'NAME': DB_NAME,   
+        'USER': DB_USERNAME,        
+        'PASSWORD': DB_PASSWORD,    
+        'HOST': DB_SERVER,
+        'PORT': DB_PORT,
+        'OPTIONS': {
+            'driver': DB_DRIVER,
+            'Encrypt': 'yes',
+            'TrustServerCertificate': 'no',
+            'Connection Timeout': 30,
+        },
     }
 }
+
 
 # Password validation settings
 AUTH_PASSWORD_VALIDATORS = [
