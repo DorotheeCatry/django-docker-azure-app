@@ -6,7 +6,7 @@ PORT=8000
 # API Authentication
 API_USERNAME=ELITELOANS1
 API_PASSWORD=EliteLoans100
-API_TOKEN=""
+API_TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFTElURUxPQU5TMSIsImlkIjo3LCJleHAiOjE3NDE4NzUwNDZ9.Iz_OKW5Rnn7y5WO_MFCe-zdPS78URit4T6iP0zOnwZE'
 
 # URLs
 API_BASE_URL=http://api-loanrequest.francecentral.azurecontainer.io:8001/api/v1
@@ -21,7 +21,4 @@ DB_PASSWORD=ussba2025RBX
 DB_SERVER=dcatrysqlserver.database.windows.net
 DB_NAME=db_django
 DB_PORT=1433
-DB_DRIVER="ODBC Driver 18 for SQL Server"
-DATABASE_URL=mssql+pyodbc://adminussba:ussba2025RBX@dcatrysqlserver.database.windows.net:1433/db_django?driver=ODBC+Driver+18+for+SQL+Server
-
-
+DB_DRIVER=ODBC+Driver+18+for+SQL+Server
