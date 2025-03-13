@@ -122,14 +122,14 @@ DB_ENGINE = os.getenv("DB_ENGINE")
 
 DATABASES = {
     'default': {
-        'ENGINE': DB_ENGINE,  
+        'ENGINE': 'mssql',  
         'NAME': DB_NAME,   
         'USER': DB_USERNAME,        
         'PASSWORD': DB_PASSWORD,    
         'HOST': DB_SERVER,
         'PORT': DB_PORT,
         'OPTIONS': {
-            'driver': DB_DRIVER,
+            'driver': "ODBC Driver 18 for SQL Server",
             'Encrypt': 'yes',
             'TrustServerCertificate': 'no',
             'Connection Timeout': 30,

@@ -7,16 +7,16 @@ import csv
 
 def add_users():
     """
-    Ajoute à la fois les conseillers (définis manuellement) et les clients depuis un fichier CSV dans la table UserProfile.
+    Adds both advisors (manually defined) and clients from a CSV file to the UserProfile table.
     """
-    # Liste des advisors à ajouter
+    # List of advisors to add
     advisors = [
         {"username": "DavidAdvisor", "email": "david@advisor.fr", "password": "davidpass", "role": "advisor", "first_name": "David", "last_name": "Advisor", "is_staff": True},
         {"username": "DorotheeAdvisor", "email": "dorothee@advisor.fr", "password": "doropass", "role": "advisor", "first_name": "Dorothée", "last_name": "Advisor", "is_staff": True},
         {"username": "SamiAdvisor", "email": "sami@advisor.fr", "password": "samipass", "role": "advisor", "first_name": "Sami", "last_name": "Advisor", "is_staff": True},
     ]
 
-    # Ajout des advisors
+    # Adding advisors
     for user_data in advisors:
         if not UserProfile.objects.filter(username=user_data["username"]).exists():
             user = UserProfile.objects.create_user(
@@ -33,14 +33,14 @@ def add_users():
         else:
             print(f"Advisor {user_data['username']} already exists.")
 
-    # Ajout des clients depuis le CSV
+    # Adding clients from the CSV
     file_path = "project/project/data/users_prepared.csv"
     with open(file_path, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
 
         for row in reader:
             if not UserProfile.objects.filter(username=row["username"]).exists():
-                advisor = UserProfile.objects.get(id=row["advisor_id"])  # Lier l'advisor à partir de l'advisor_id
+                advisor = UserProfile.objects.get(id=row["advisor_id"])  # Link the advisor from the advisor_id
                 user = UserProfile.objects.create_user(
                     username=row["username"],
                     email=row["email"],
@@ -50,7 +50,7 @@ def add_users():
                     last_name=row["last_name"],
                     is_staff=row["is_staff"]
                 )
-                user.advisor = advisor  # Lier l'advisor
+                user.advisor = advisor  # Link the advisor
                 user.save()
                 print(f"Client {user.username} added successfully with advisor {advisor.username}.")
             else:
@@ -58,7 +58,7 @@ def add_users():
 
 def add_loans():
     """
-    Ajoute des prêts depuis un fichier CSV et les assigne aux bons utilisateurs.
+    Adds loans from a CSV file and assigns them to the correct users.
     """
     file_path = "project/project/data/loans_prepared.csv"
 
@@ -66,7 +66,7 @@ def add_loans():
         reader = csv.DictReader(file)
 
         for row in reader:
-            # Vérifie si les utilisateurs et les conseillers existent
+            # Check if the users and advisors exist
             try:
                 user = UserProfile.objects.get(id=row['user_id'])
                 advisor = UserProfile.objects.get(id=row['advisor_id'])
@@ -74,8 +74,8 @@ def add_loans():
                 print(f"User or Advisor not found for Loan Request: user_id={row['user_id']}, advisor_id={row['advisor_id']}")
                 continue
 
-            # Générer une date aléatoire entre 2010 et 2024 pour plus de réalisme
-            random_days = random.randint(0, 14 * 365)  # 14 ans max (depuis 2010)
+            # Generate a random date between 2010 and 2024 for more realism
+            random_days = random.randint(0, 14 * 365)  # 14 years max (since 2010)
             created_at = datetime(2010, 1, 1) + timedelta(days=random_days)
 
             LoanRequest.objects.create(
