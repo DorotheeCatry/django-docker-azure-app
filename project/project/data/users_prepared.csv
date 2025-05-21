@@ -1,8 +1,0 @@
-user_id,username,email,role,password,first_name,last_name,is_staff,advisor_id
-4,MAIL BOXES ETC,mailboxesetc@company.com,client,password123,User,MAIL BOXES ETC,False,2
-5,SUBWAY,subway@company.com,client,password123,User,SUBWAY,False,2
-6,DUNKIN DONUTS,dunkindonuts@company.com,client,password123,User,DUNKIN DONUTS,False,3
-7,MINUTEMAN PRESS,minutemanpress@company.com,client,password123,User,MINUTEMAN PRESS,False,2
-8,MATCO TOOLS,matcotools@company.com,client,password123,User,MATCO TOOLS,False,3
-9,DOMINOS PIZZA,dominospizza@company.com,client,password123,User,DOMINOS PIZZA,False,3
-10,PLAY IT AGAIN SPORTS,playitagainsports@company.com,client,password123,User,PLAY IT AGAIN SPORTS,False,1
