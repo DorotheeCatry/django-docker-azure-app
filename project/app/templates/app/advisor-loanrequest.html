@@ -1,0 +1,87 @@
+{% extends "base-advisor.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-8">
+    <h1 class="text-3xl font-bold text-[#0D1A34] mb-6">Loan Predictions</h1>
+
+    <!-- Filters -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Date Range Filter -->
+            <div class="flex items-center space-x-2">
+                <label for="startDate" class="text-gray-700">Start Date:</label>
+                <input type="date" id="startDate" class="border rounded-md px-3 py-2 focus:ring-[#C9A05F]">
+                <label for="endDate" class="text-gray-700">End Date:</label>
+                <input type="date" id="endDate" class="border rounded-md px-3 py-2 focus:ring-[#C9A05F]">
+            </div>
+
+            <!-- Client Selection -->
+            <div>
+                <label for="clientSelect" class="block text-gray-700 mb-2">Select Client:</label>
+                <select id="clientSelect" class="w-full border rounded-md px-3 py-2 focus:ring-[#C9A05F]">
+                    <option value="">All Clients</option>
+                    {% for client in clients %}
+                        <option value="{{ client.id }}">{{ client.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white overflow-hidden rounded-lg shadow-md">
+        <table class="w-full">
+            <thead class="bg-[#0D1A34] text-white">
+                <tr>
+                    <th class="py-4 px-6 text-left">ID</th>
+                    <th class="py-4 px-6 text-left">Client</th>
+                    <th class="py-4 px-6 text-left">Date</th>
+                    <th class="py-4 px-6 text-left">Amount</th>
+                    <th class="py-4 px-6 text-left">Duration</th>
+                    <th class="py-4 px-6 text-left">Status</th>
+                    <th class="py-4 px-6 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-gray-200">
+                {% for loan in loans %}
+                <tr class="hover:bg-gray-50 transition-colors" data-client="{{ loan.user.id }}" data-date="{{ loan.created_at|date:'Y-m-d' }}" data-id="{{ loan.id }}">
+                    <td class="py-4 px-6">{{ loan.id }}</td>
+                    <td class="py-4 px-6">{{ loan.user.username }}</td>
+                    <td class="py-4 px-6">{{ loan.created_at|date:"Y-m-d" }}</td>
+                    <td class="py-4 px-6">${{ loan.amount|floatformat:2 }}</td>
+                    <td class="py-4 px-6">{{ loan.term }} months</td>
+                    <td class="py-4 px-6 font-semibold" id="status-{{ loan.id }}">
+                        <span class="{% if loan.status == 'approved' %}text-green-600{% elif loan.status == 'rejected' %}text-red-600{% else %}text-gray-600{% endif %}">
+                            {{ loan.status }}
+                        </span>
+                    </td>
+                    <td class="py-4 px-6">
+                        {% if loan.status == "pending" %}
+                            <button class="bg-green-700 text-white px-5 py-2 rounded-lg hover:bg-yellow-950 transition approve-btn" 
+                                    data-id="{{ loan.id }}">
+                                Approve
+                            </button>
+                            <button class="bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition ml-2 reject-btn" 
+                                    data-id="{{ loan.id }}">
+                                Reject
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="py-6 text-center text-gray-500">No loan predictions available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- CSRF Token -->
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+</div>
+
+<script src="{% static 'js/script_advisor-loanrequest.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base-client.html' %}
+
+{% block title %}Elite Loans - Loan Predictions{% endblock %}
+
+{% block content %}
+
+<section>
+    <div class="container mx-auto px-6">
+        <h2 class="text-2xl font-semibold text-gray-900 my-4">Loan Predictions</h2>
+
+        <!-- Table Section -->
+        <div class="overflow-hidden rounded-lg shadow-lg">
+            <table class="w-full text-gray-900" id="loansTable">
+                <thead class="bg-gray-900 text-white uppercase text-sm tracking-wider">
+                    <tr>
+                        <th class="py-4 px-6 text-left">Date</th>
+                        <th class="py-4 px-6 text-left">Amount</th>
+                        <th class="py-4 px-6 text-left">Duration</th>
+                        <th class="py-4 px-6 text-left">NAICS</th>
+                        <th class="py-4 px-6 text-left">Rural</th>
+                        <th class="py-4 px-6 text-left">Franchise</th>
+                        <th class="py-4 px-6 text-left">Employees</th>
+                        <th class="py-4 px-6 text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for prediction in predictions %}
+                    <tr class="bg-white hover:bg-gray-50">
+                        <td class="py-4 px-6">{{ prediction.created_at|date:"Y-m-d" }}</td>
+                        <td class="py-4 px-6">${{ prediction.amount }}</td>
+                        <td class="py-4 px-6">{{ prediction.term }} months</td>
+                        <td class="py-4 px-6">{{ prediction.naics }}</td>
+                        <td class="py-4 px-6">{{ prediction.rural }}</td>
+                        <td class="py-4 px-6">{{ prediction.franchise }}</td>
+                        <td class="py-4 px-6">{{ prediction.no_emp }}</td>
+                        <td class="py-4 px-6 font-semibold" id="status-{{ prediction.id }}">{{ prediction.status }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="py-6 text-center text-gray-500">No loan predictions available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+{% endblock %}

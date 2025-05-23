@@ -1,0 +1,12 @@
+{
+  "name": "elite-loans",
+  "version": "1.0.0",
+  "description": "Elite Loans Application",
+  "scripts": {
+    "dev": "python project/manage.py runserver",
+    "tailwind": "cd project/theme/static_src && npm run build"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.1"
+  }
+}

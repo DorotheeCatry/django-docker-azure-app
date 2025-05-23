@@ -1,1 +1,1 @@
-# django-docker-azure-app
+# DjangoAPI

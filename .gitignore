@@ -1,0 +1,36 @@
+# 💾 Virtual environments and dependencies
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.__init__.py
+
+# 🔧 Local configurations and secrets (if any)
+.env
+*.dbsqlite3
+instance/
+
+# 📦 Log files and caches
+logs/
+*.log
+*.out
+*.err
+*.pid
+*.gz
+
+# ⚠️ Data files and ML models (🚨 TOO HEAVY FOR GIT)
+*.parquet
+*.csv
+
+# 🚀 Migrations and temporary files
+migrations
+
+# 🐳 Docker and IDE
+docker-compose.override.yml
+.vscode/
+.idea/*.csv
+*.parquet
+.venv/
+.venv
+venv

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ client.user.username }} - Details</h1>
+        <p>Email: {{ client.user.email }}</p>
+
+        <h2 class="text-xl font-semibold text-gray-800 mt-4">Loan Requests</h2>
+        <table class="w-full text-gray-900 text-sm mt-2">
+            <thead class="bg-gray-900 text-white uppercase tracking-wide">
+                <tr>
+                    <th class="py-2 px-3 text-left">Loan Amount</th>
+                    <th class="py-2 px-3 text-left">Status</th>
+                    <th class="py-2 px-3 text-left">Date Requested</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for loan in loan_requests %}
+                    <tr class="bg-white hover:bg-gray-50">
+                        <td class="py-2 px-3">${{ loan.amount }}</td>
+                        <td class="py-2 px-3">{{ loan.status }}</td>
+                        <td class="py-2 px-3">{{ loan.created_at|date:"Y-m-d" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" class="py-4 text-center text-gray-500">No loan requests found for this client.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}About Elite Loans{% endblock %}
+
+{% block content %}
+    <section class="relative py-20">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); opacity: 0.1;"></div>
+        <div class="container mx-auto px-6 relative">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl font-light text-[#0D1A34] mb-4">About Elite Loans</h1>
+                <p class="text-xl text-gray-600 mb-8">
+                    Since 2010, we've been revolutionizing the lending industry with innovative solutions and unwavering commitment to our clients' success.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-light text-[#0D1A34] mb-6">Our Mission</h2>
+                    <p class="text-gray-600 mb-4">
+                        At Elite Loans, we believe that access to financial resources should be straightforward and transparent. Our mission is to provide innovative lending solutions that empower businesses and individuals to achieve their financial goals.
+                    </p>
+                    <p class="text-gray-600">
+                        We combine cutting-edge technology with personalized service to deliver an exceptional lending experience that puts our clients first.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <!-- Trust & Security Icon -->
+                        <i class="fas fa-shield-alt fa-3x w-12 h-12 text-[#C9A05F] mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-2">Trust & Security</h3>
+                        <p class="text-sm text-gray-600">Bank-level security protocols and trusted by thousands.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <!-- Expert Team Icon -->
+                        <i class="fas fa-users fa-3x w-12 h-12 text-[#C9A05F] mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-2">Expert Team</h3>
+                        <p class="text-sm text-gray-600">Dedicated professionals with years of experience.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <!-- Excellence Icon -->
+                        <i class="fas fa-trophy fa-3x w-12 h-12 text-[#C9A05F] mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-2">Excellence</h3>
+                        <p class="text-sm text-gray-600">Award-winning service and solutions.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <!-- Innovation Icon -->
+                        <i class="fas fa-cogs fa-3x w-12 h-12 text-[#C9A05F] mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-2">Innovation</h3>
+                        <p class="text-sm text-gray-600">Cutting-edge technology and processes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-light text-[#0D1A34] mb-12 text-center">Our Leadership Team</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="relative w-48 h-48 mx-auto mb-4">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Sarah Johnson" class="rounded-full w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Sarah Johnson</h3>
+                    <p class="text-gray-600">Chief Executive Officer</p>
+                </div>
+                <div class="text-center">
+                    <div class="relative w-48 h-48 mx-auto mb-4">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Michael Chen" class="rounded-full w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Michael Chen</h3>
+                    <p class="text-gray-600">Chief Technology Officer</p>
+                </div>
+                <div class="text-center">
+                    <div class="relative w-48 h-48 mx-auto mb-4">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Emily Rodriguez" class="rounded-full w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Emily Rodriguez</h3>
+                    <p class="text-gray-600">Chief Financial Officer</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

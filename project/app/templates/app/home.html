@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Elite Loans - Home{% endblock %}
+
+{% block content %}
+<section class="bg-white flex-1 flex items-center justify-center text-center py-12 md:py-16">
+    <div class="container mx-auto px-6">
+        <h1 class="text-5xl font-light text-[var(--color-primary)] mb-6">Financial Solutions</h1>
+        <h2 class="text-3xl font-semibold text-[var(--color-accent)] mb-4">Tailored for You</h2>
+        <p class="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
+            Experience seamless lending with Elite Loans. We offer competitive rates, quick approvals, and personalized service for all your financial needs.
+        </p>
+        <a href="{% url 'signup' %}" class="bg-[var(--color-primary)] text-white px-20 py-4 rounded-full hover:bg-opacity-90 transition">Get Started</a>
+    </div>
+</section>
+
+<section class="bg-gray-50 flex-1 flex items-center justify-center text-center py-8 md:py-12">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl font-light text-[var(--color-primary)] mb-4">Why Choose <span class="font-semibold">Elite Loans</span></h2>
+        <p class="text-gray-600 mb-6 max-w-xl mx-auto text-base">
+            We combine financial expertise with cutting-edge technology to provide you with the best lending experience.
+        </p>
+        <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-4 bg-white rounded-3xl shadow-lg">
+                <h3 class="text-lg font-semibold text-[var(--color-primary)] mb-3">Secure & Trusted</h3>
+                <p class="text-gray-600 text-sm">Bank-level security and trusted by thousands of satisfied customers.</p>
+            </div>
+            <div class="p-4 bg-white rounded-3xl shadow-lg">
+                <h3 class="text-lg font-semibold text-[var(--color-primary)] mb-3">Quick Approval</h3>
+                <p class="text-gray-600 text-sm">Get approved in minutes with our streamlined application process.</p>
+            </div>
+            <div class="p-4 bg-white rounded-3xl shadow-lg">
+                <h3 class="text-lg font-semibold text-[var(--color-primary)] mb-3">Competitive Rates</h3>
+                <p class="text-gray-600 text-sm">We offer some of the most competitive interest rates in the market.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white flex-1 flex items-center justify-center text-center py-8 md:py-8">
+    <div class="container mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <div>
+            <p class="text-3xl font-semibold text-[var(--color-primary)]">10K+</p>
+            <span class="text-gray-600 text-sm">Happy Customers</span>
+        </div>
+        <div>
+            <p class="text-3xl font-semibold text-[var(--color-primary)]">$500M+</p>
+            <span class="text-gray-600 text-sm">Loans Funded</span>
+        </div>
+        <div>
+            <p class="text-3xl font-semibold text-[var(--color-primary)]">98%</p>
+            <span class="text-gray-600 text-sm">Satisfaction Rate</span>
+        </div>
+        <div>
+            <p class="text-3xl font-semibold text-[var(--color-primary)]">15+</p>
+            <span class="text-gray-600 text-sm">Years Experience</span>
+        </div>
+    </div>
+</section>
+{% endblock %}

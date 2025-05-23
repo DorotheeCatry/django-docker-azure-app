@@ -1,0 +1,121 @@
+{% extends 'base-client.html' %}
+
+{% block title %}Loan Application - Refined Financial Solutions{% endblock %}
+
+{% block content %}
+<!-- Page Container -->
+
+    <!-- Loan Request Form Section -->
+    <section class="flex-1 py-12 bg-gray-50" style="overflow-y: auto;">
+        <div class="container mx-auto px-6">
+            <div class="bg-white p-8 rounded-lg shadow-lg max-w-7xl mx-auto">
+                <h2 class="text-2xl font-medium text-gray-900 text-center mb-6">Loan Application Form</h2>
+                
+                <form method="POST" action="{% url 'client-loanrequest' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Form Layout (4 Columns) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+                        <!-- GrAppv (Loan Amount Requested) -->
+                        <div class="mb-4">
+                            <label for="amount" class="block text-gray-700 text-sm">Requested Loan Amount *</label>
+                            <input type="number" name="amount" id="amount" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                            <p class="text-xs text-gray-500 mt-2">The amount of the loan you are requesting. This is the total loan amount you would like to borrow.</p>
+                        </div>
+
+                        <!-- Term (Loan Term) -->
+                        <div class="mb-4">
+                            <label for="term" class="block text-gray-700 text-sm">Loan Term (in months) *</label>
+                            <input type="number" name="term" id="term" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                            <p class="text-xs text-gray-500 mt-2">The length of time you wish to repay the loan, in months (e.g., 12, 36, 60 months).</p>
+                        </div>
+                        
+                        <!-- State (State of Business) -->
+                        <div class="mb-4">
+                            <label for="state" class="block text-gray-700 text-sm">State of Business *</label>
+                            <input type="text" name="state" id="state" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                            <p class="text-xs text-gray-500 mt-2">The state where your business is located (use the two-letter postal abbreviation for the state).</p>
+                        </div>
+
+                        <!-- NAICS_Sectors (Business Industry) -->
+                        <div class="mb-4">
+                            <label for="naics" class="block text-gray-700 text-sm">Business Industry (NAICS Code) *</label>
+                            <input type="text" name="naics" id="naics" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required maxlength="2">
+                            <p class="text-xs text-gray-500 mt-2">The NAICS (North American Industry Classification System) code representing the industry your business operates in. Please enter the first two digits only.</p>
+                        </div>
+
+                        <!-- New (Business Status) -->
+                        <div class="mb-4">
+                            <label for="new" class="block text-gray-700 text-sm">New Business *</label>
+                            <select name="new" id="new" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                                <option value="" disabled selected></option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-2">Indicate whether your business is newly established (1 for Yes, 0 for No).</p>
+                        </div>
+
+                        <!-- NoEmp -->
+                        <div class="mb-4">
+                            <label for="no_emp" class="block text-gray-700 text-sm">Number of Employees *</label>
+                            <input type="number" name="no_emp" id="no_emp" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                            <p class="text-xs text-gray-500 mt-2">The total number of employees working in your business.</p>
+                        </div>
+
+                        <!-- Franchise (Franchise Status) -->
+                        <div class="mb-4">
+                            <label for="franchise" class="block text-gray-700 text-sm">Franchise *</label>
+                            <select name="franchise" id="franchise" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                                <option value="" disabled selected></option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-2">Indicate if your business is part of a franchise (1 for Yes, 0 for No).</p>
+                        </div>
+
+                        <!-- RevLineCr (Revolving Line of Credit) -->
+                        <div class="mb-4">
+                            <label for="rev_line_cr" class="block text-gray-700 text-sm">Revolving Line of Credit *</label>
+                            <select name="rev_line_cr" id="rev_line_cr" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                                <option value="" disabled selected></option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-2">Indicates whether your business currently has a revolving line of credit (e.g., credit cards, business lines).</p>
+                        </div>
+
+                        <!-- LowDoc (Documentation Requirements) -->
+                        <div class="mb-4">
+                            <label for="low_doc" class="block text-gray-700 text-sm">Minimal Documentation *</label>
+                            <select name="low_doc" id="low_doc" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                                <option value="" disabled selected></option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-2">Indicates if you are submitting a minimal documentation loan application.</p>
+                        </div>
+
+                        <!-- Rural (Location Type) -->
+                        <div class="mb-4">
+                            <label for="rural" class="block text-gray-700 text-sm">Business Location *</label>
+                            <select name="rural" id="rural" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-sm" required>
+                                <option value="" disabled selected></option>
+                                <option value="0">Urban</option>
+                                <option value="1">Rural</option>
+                                <option value="None">Not Specified</option>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-2">Indicates whether your business is located.</p>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-center mt-8">
+                        <button type="submit" class="bg-[#be8e3f] text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors text-sm">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

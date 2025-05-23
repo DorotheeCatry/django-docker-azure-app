@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Client Dashboard{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #0D1A34;
+            --color-accent: #C9A05F;
+            --color-text: #2D3748;
+            --color-bg: #F9FAFB;
+        }
+    </style>
+</head>
+<body class="bg-[var(--color-bg)] text-[var(--color-text)]">
+    <div class="flex flex-col min-h-screen">
+        <nav class="bg-[var(--color-primary)] text-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-lg">
+            <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+                <a href="/">
+                    <img src="/static/images/logo-eliteloans.png" alt="Elite Loans Logo" class="h-8">
+                </a>                
+                <div class="hidden md:flex space-x-12 text-white text-sm tracking-wide">
+                    <a href="{% url 'client-dashboard' %}" class="{% if request.path == '/client-dashboard/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">DASHBOARD</a>
+                    <a href="#" class="{% if request.path == '/news/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">NEWS</a>
+                    <a href="{% url 'client-loanrequest'%}" class="{% if request.path == '/client-loanrequest/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">LOAN REQUEST</a>
+                    <a href="{% url 'client-loanstatus'%}" class="{% if request.path == '/client-loanstatus/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">LOAN STATUS</a>
+                    <a href="#" class="{% if request.path == '/chat/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">CHAT WITH ADVISOR</a>
+                </div>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-[#a17a3c] text-white px-8 py-2.5 rounded-full text-sm tracking-wide transition-all duration-300 hover:bg-opacity-90 hover:shadow-xl">
+                        LOG OUT
+                    </button>
+                </form>
+            </div>
+        </nav>
+        
+        <div class="flex-1 flex flex-col">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <footer class="bg-[var(--color-primary)] text-white py-4 text-center mt-auto">
+            <div class="container mx-auto px-4">
+                <div class="text-sm">&copy; 2025 ELITE LOANS. ALL RIGHTS RESERVED.</div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
