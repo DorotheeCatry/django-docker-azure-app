@@ -1,3 +1,4 @@
+<!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Elite Loans{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Lien vers Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --color-primary: #0D1A34;
@@ -14,97 +15,38 @@
             --color-text: #2D3748;
             --color-bg: #F9FAFB;
         }
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        h1, h2 {
-            font-family: 'Playfair Display', serif;
-        }
     </style>
 </head>
 <body class="bg-[var(--color-bg)] text-[var(--color-text)]">
     <div class="flex flex-col min-h-screen">
-        <!-- Navigation -->
-        <nav class="bg-[var(--color-primary)] text-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-lg bg-opacity-95">
-            <div class="container mx-auto px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <a href="/" class="flex items-center space-x-3">
-                        <img src="/static/images/logo-eliteloans.png" alt="Elite Loans Logo" class="h-10">
-                    </a>
-                    
-                    <div class="hidden md:flex items-center space-x-12 text-sm tracking-wide">
-                        <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}text-[var(--color-accent)]{% endif %}">HOME</a>
-                        <a href="{% url 'home-services' %}" class="nav-link {% if request.path == '/services/' %}text-[var(--color-accent)]{% endif %}">SERVICES</a>
-                        <a href="{% url 'home-about' %}" class="nav-link {% if request.path == '/about/' %}text-[var(--color-accent)]{% endif %}">ABOUT</a>
-                        <a href="{% url 'home-contact' %}" class="nav-link {% if request.path == '/contact/' %}text-[var(--color-accent)]{% endif %}">CONTACT</a>
-                    </div>
-
-                    <div class="flex items-center space-x-4">
-                        <a href="/login/" class="bg-[var(--color-accent)] text-white px-8 py-2.5 rounded-full text-sm font-medium tracking-wide transition-all duration-300 hover:bg-opacity-90 hover:shadow-lg transform hover:-translate-y-0.5">
-                            CLIENT PORTAL
-                        </a>
-                    </div>
+        <nav class="bg-[var(--color-primary)] text-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-lg">
+            <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+                <a href="/">
+                    <img src="/static/images/logo-eliteloans.png" alt="Elite Loans Logo" class="h-8">
+                </a>                
+                <div class="hidden md:flex space-x-12 text-white text-sm tracking-wide">
+                    <a href="{% url 'home' %}" class="{% if request.path == '/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">HOME</a>
+                    <a href="{% url 'home-services' %}" class="{% if request.path == '/services/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">SERVICES</a>
+                    <a href="{% url 'home-about' %}" class="{% if request.path == '/about/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">ABOUT</a>
+                    <a href="{% url 'home-contact' %}" class="{% if request.path == '/contact/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">CONTACT</a>                    
                 </div>
+                <a href="/login/">
+                    <button class="bg-[#a17a3c] text-white px-8 py-2.5 rounded-full text-sm tracking-wide 
+                    transition-all duration-300 hover:bg-opacity-90 hover:shadow-xl">PORTAL</button>                
+                </a>
             </div>
         </nav>
-
-        <!-- Main Content -->
-        <main class="flex-1">
+        
+        <div class="flex-1 flex flex-col">
             {% block content %}
             {% endblock %}
-        </main>
+        </div>
 
-        <!-- Footer -->
-        <footer class="bg-[var(--color-primary)] text-white py-12">
-            <div class="container mx-auto px-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
-                    <div>
-                        <img src="/static/images/logo-eliteloans.png" alt="Elite Loans Logo" class="h-8 mb-4">
-                        <p class="text-gray-400 text-sm">Empowering businesses with innovative financial solutions since 2010.</p>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="{% url 'home' %}" class="hover:text-[var(--color-accent)]">Home</a></li>
-                            <li><a href="{% url 'home-services' %}" class="hover:text-[var(--color-accent)]">Services</a></li>
-                            <li><a href="{% url 'home-about' %}" class="hover:text-[var(--color-accent)]">About Us</a></li>
-                            <li><a href="{% url 'home-contact' %}" class="hover:text-[var(--color-accent)]">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Services</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#" class="hover:text-[var(--color-accent)]">Business Loans</a></li>
-                            <li><a href="#" class="hover:text-[var(--color-accent)]">Equipment Financing</a></li>
-                            <li><a href="#" class="hover:text-[var(--color-accent)]">Commercial Real Estate</a></li>
-                            <li><a href="#" class="hover:text-[var(--color-accent)]">Working Capital</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li class="flex items-center space-x-2">
-                                <i class="fas fa-phone"></i>
-                                <span>(555) 123-4567</span>
-                            </li>
-                            <li class="flex items-center space-x-2">
-                                <i class="fas fa-envelope"></i>
-                                <span>contact@eliteloans.com</span>
-                            </li>
-                            <li class="flex items-center space-x-2">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>123 Financial District, NY</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="border-t border-gray-800 mt-12 pt-8 text-center text-sm text-gray-400">
-                    <p>&copy; 2025 Elite Loans. All rights reserved.</p>
-                </div>
+        <footer class="bg-[var(--color-primary)] text-white py-4 text-center mt-auto">
+            <div class="container mx-auto px-4">
+                <div class="text-sm">&copy; 2025 ELITE LOANS. ALL RIGHTS RESERVED.</div>
             </div>
         </footer>
     </div>
-
-    {% block extra_js %}{% endblock %}
 </body>
 </html>

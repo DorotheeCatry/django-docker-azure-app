@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Advisor Dashboard{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --color-primary: #0D1A34;
@@ -14,80 +13,41 @@
             --color-text: #2D3748;
             --color-bg: #F9FAFB;
         }
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        h1, h2 {
-            font-family: 'Playfair Display', serif;
-        }
     </style>
 </head>
 <body class="bg-[var(--color-bg)] text-[var(--color-text)]">
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-[var(--color-primary)] text-white">
-            <div class="p-6">
-                <a href="/" class="flex items-center space-x-3">
+    <div class="flex flex-col min-h-screen">
+        <nav class="bg-[var(--color-primary)] text-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-lg">
+            <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+                <a href="/advisor-dashboard/">
                     <img src="/static/images/logo-eliteloans.png" alt="Elite Loans Logo" class="h-8">
                 </a>
-            </div>
-            <nav class="mt-6">
-                <a href="{% url 'advisor-dashboard' %}" 
-                   class="flex items-center px-6 py-3 text-sm {% if request.path == '/advisor-dashboard/' %}bg-[var(--color-accent)] text-white{% else %}text-gray-300 hover:bg-gray-800{% endif %}">
-                    <i class="fas fa-chart-line w-5"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="{% url 'advisor-loanrequest' %}" 
-                   class="flex items-center px-6 py-3 text-sm {% if request.path == '/advisor-loanrequest/' %}bg-[var(--color-accent)] text-white{% else %}text-gray-300 hover:bg-gray-800{% endif %}">
-                    <i class="fas fa-file-invoice-dollar w-5"></i>
-                    <span>Loan Requests</span>
-                </a>
-                <a href="#" 
-                   class="flex items-center px-6 py-3 text-sm {% if request.path == '/clients/' %}bg-[var(--color-accent)] text-white{% else %}text-gray-300 hover:bg-gray-800{% endif %}">
-                    <i class="fas fa-users w-5"></i>
-                    <span>Clients</span>
-                </a>
-                <a href="#" 
-                   class="flex items-center px-6 py-3 text-sm {% if request.path == '/chat/' %}bg-[var(--color-accent)] text-white{% else %}text-gray-300 hover:bg-gray-800{% endif %}">
-                    <i class="fas fa-comments w-5"></i>
-                    <span>Messages</span>
-                </a>
-                <a href="#" 
-                   class="flex items-center px-6 py-3 text-sm {% if request.path == '/reports/' %}bg-[var(--color-accent)] text-white{% else %}text-gray-300 hover:bg-gray-800{% endif %}">
-                    <i class="fas fa-file-alt w-5"></i>
-                    <span>Reports</span>
-                </a>
-            </nav>
-        </aside>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Top Navigation -->
-            <header class="bg-white shadow-sm">
-                <div class="flex items-center justify-between px-6 py-4">
-                    <h1 class="text-xl font-semibold text-gray-800">{% block page_title %}Dashboard{% endblock %}</h1>
-                    <div class="flex items-center space-x-4">
-                        <div class="text-sm text-gray-600">
-                            Welcome back, {{ request.user.first_name }}
-                        </div>
-                        <form method="post" action="{% url 'logout' %}" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" 
-                                    class="bg-[var(--color-accent)] text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90 transition-colors">
-                                Sign Out
-                            </button>
-                        </form>
-                    </div>
+                <div class="hidden md:flex space-x-12 text-white text-sm tracking-wide">
+                    <a href="{% url 'advisor-dashboard' %}" class="{% if request.path == '/advisor-dashboard/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">DASHBOARD</a>
+                    <a href="{% url 'advisor-loanrequest' %}" class="{% if request.path == '/advisor-loanrequest/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">LOAN REQUESTS</a>
+                    <a href="#" class="{% if request.path == '/clients/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">CLIENTS</a>
+                    <a href="#" class="{% if request.path == '/news/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">NEWS</a>
+                    <a href="#" class="{% if request.path == '/chat/' %}font-bold text-gray-200{% else %}hover:text-gray-200 transition-colors{% endif %}">CHAT</a>
                 </div>
-            </header>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-[#a17a3c] text-white px-8 py-2.5 rounded-full text-sm tracking-wide transition-all duration-300 hover:bg-opacity-90 hover:shadow-xl">
+                        LOG OUT
+                    </button>
+                </form>
+            </div>
+        </nav>
 
-            <!-- Page Content -->
-            <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
-                {% block content %}{% endblock %}
-            </main>
+        <div class="flex-1 flex flex-col container mx-auto px-6 py-6">
+            {% block content %}
+            {% endblock %}
         </div>
-    </div>
 
-    {% block extra_js %}{% endblock %}
+        <footer class="bg-[var(--color-primary)] text-white py-4 text-center mt-auto">
+            <div class="container mx-auto px-4">
+                <div class="text-sm">&copy; 2025 ELITE LOANS. ALL RIGHTS RESERVED.</div>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>
